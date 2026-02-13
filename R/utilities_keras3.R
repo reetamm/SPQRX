@@ -55,7 +55,7 @@ Finv.SPQR=function(y){
 
 }
 
-library(evd)
+#' @importFrom evd pgpd
 #' @export
 F.GPD=function(y,u=0,scale=1,shape=0.1){
   tf <- get("tf", envir = asNamespace("SPQRX"))
