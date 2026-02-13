@@ -1561,6 +1561,7 @@ predict_model.spqrx_model <- function(object, newdata, ...) {
 #' to explained cases and columns correspond to feature weights.
 #' Otherwise, the full \code{lime} explanation object.
 #'
+#' @import lime
 #' @export
 eval.explain.lime <- function(model,
                               x_training,
