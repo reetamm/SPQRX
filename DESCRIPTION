@@ -6,6 +6,7 @@ Authors@R: person("Dalton", "YourLastName", email = "dalton@example.com", role =
 Description: Semi-parametric quantile regression for extreme quantile levels using neural network models.
 License: MIT
 Encoding: UTF-8
+url: https://reetamm.github.io/SPQRX
 LazyData: true
 Imports:
     stats,
