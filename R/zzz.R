@@ -1,3 +1,4 @@
+#' @import reticulate
 .onLoad <- function(libname, pkgname) {
   # Ensure TensorFlow is installed
   if (!reticulate::py_module_available("tensorflow")) {
