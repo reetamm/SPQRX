@@ -1754,6 +1754,7 @@ eval.plot.QVI <- function(model, x, var.indexs, lower_quantile = 0.1, upper_quan
 #' @return Invisibly returns a \code{ggplot} object showing the LIME
 #'   contribution summary.
 #'
+#' @import lime
 #' @export
 eval.plot.lime <- function(model, x_training, x_explain, tau = 0.5)
 {
