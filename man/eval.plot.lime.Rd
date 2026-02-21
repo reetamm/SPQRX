@@ -2,29 +2,30 @@
 % Please edit documentation in R/SPQRX.R
 \name{eval.plot.lime}
 \alias{eval.plot.lime}
-\title{Plot Quantile Variable Importance (QVI)}
+\title{Plot LIME Explanation Summary}
 \usage{
 eval.plot.lime(model, x_training, x_explain, tau = 0.5)
 }
 \arguments{
 \item{model}{A fitted model object returned by \code{fit_spqrx()}.}
 
-\item{x}{Matrix or data frame of covariates used for evaluation.}
+\item{x_training}{Matrix or data frame of training covariates used to
+build the LIME explainer.}
 
-\item{var.indexs}{Integer vector specifying variable indices to plot.}
+\item{x_explain}{Matrix, data frame, or numeric vector representing
+the observation(s) to explain.}
 
-\item{lower_quantile}{Numeric. Lower bound of quantile range.}
-
-\item{upper_quantile}{Numeric. Upper bound of quantile range.}
-
-\item{quantile_increment}{Numeric. Step size between quantiles.}
+\item{tau}{Numeric. Quantile level used for prediction when generating
+LIME explanations. Default is \code{0.5}.}
 }
 \value{
-Invisibly returns \code{NULL}. Produces a base R plot
-of variable importance across quantiles.
+Invisibly returns a \code{ggplot} object showing the LIME
+  contribution summary.
 }
 \description{
-Generates a line plot of quantile-based variable importance
-across a range of quantile levels using results from
-\code{eval.explain.VI()}.
+Generates a summary plot of LIME (Local Interpretable Model-agnostic
+Explanations) feature contributions for one or more observations.
+The plot displays feature contributions on the x-axis and features
+ordered by mean absolute contribution on the y-axis. Points are
+colored by the corresponding feature values.
 }

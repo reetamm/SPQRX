@@ -1,5 +1,7 @@
 ### SPQRX
 SPQRX is keras base R library for quantile regression and density, introduce in the paper "Semi-parametric bulk and tail regression using spline-based neural networks" By Reetam, Jordan PhD(https://arxiv.org/abs/2504.19994)
+
+
 ```r
 library(SPQRX)
 
@@ -73,4 +75,4 @@ eval.plot.shap(model.heavy, x_training, x_testing[c(100:120), ])
 This will end up generating the following extreme quantile regression plot giving one a good idea of the extreme tails. 
 
 ![Extreme Quantile Regression Plot](image.png)
-![ShapleyVExamplePlot]
+

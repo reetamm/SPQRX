@@ -370,7 +370,7 @@ in.fit.spqr <- function(input_dim, hidden_dim, n.knots,knots, x_training, x_vali
     optimizer = keras3::optimizer_adam(learning_rate = 0.001)
   )
 
-  c1 <- max(c1, 25)
+
   checkpoint <- keras3::callback_model_checkpoint(filepath=paste0('runs/','model','/spqr_initial.weights.h5'), monitor = "val_loss", verbose = 0,
                                                   save_best_only = TRUE, save_weights_only = TRUE, mode = "min",
                                                   save_freq = "epoch")
@@ -1072,7 +1072,7 @@ predict_spqrx<- function(object, x, y = NULL , type = 'QF', tau = 0.5, normalize
             c2 <- model$hyperparameter$c2
 
 
-            temp_returnBack <- predict.spqrk.GPD(model = model.heavy, type = type, Y=NULL, knots = knots, I_basis = i_basis,
+            temp_returnBack <- speedy.predict.spqrk.GPD(model = model.heavy, type = type, Y=NULL, knots = knots, I_basis = i_basis,
                                             M_basis = m_basis, covariates = x, p_a = p_a, p_b = p_b,  c1 = c1, c2 = c2, tau = tau[index])
 
             if(is.null(returnBack)) {
@@ -1097,7 +1097,7 @@ predict_spqrx<- function(object, x, y = NULL , type = 'QF', tau = 0.5, normalize
           m_basis <- matrix(0 , nrow = dim(x)[1], ncol = n.knots)
 
 
-          returnBack <- predict.spqrk.GPD(model = model.heavy, type = type, Y=NULL, knots = knots, I_basis = i_basis,
+          returnBack <- speedy.predict.spqrk.GPD(model = model.heavy, type = type, Y=NULL, knots = knots, I_basis = i_basis,
                                           M_basis = m_basis, covariates = x, p_a = p_a, p_b = p_b,  c1 = c1, c2 = c2, tau = tau)
 
           if (normalize_output) {
@@ -1762,7 +1762,7 @@ eval.plot.lime <- function(model, x_training, x_explain, tau = 0.5)
   }
 
 
-  lime_result <- eval.explain.lime(model, x_training, x_explain, tau = tau, n_features = ncol(x_training))
+  lime_result <- eval.explain.lime(model, x_training, x_explain, tau = tau, original_output = TRUE)
 
 
 
@@ -1920,6 +1920,81 @@ eval.plot.qexp <- function(model, x, y, pre_normalize = FALSE) {
 
 
 
+#' QQ-Plot of Conditional CDF Values for SPQRx Model
+#'
+#' Generates a quantile–quantile (QQ) plot comparing the empirical
+#' conditional CDF values from a fitted SPQRx model to the theoretical
+#' Uniform(0,1) distribution. If the model is well-calibrated, the
+#' points should lie approximately along the 45-degree line.
+#'
+#' @param model A fitted SPQR or SPQRx model object.
+#' @param x A matrix or data frame of covariates used for prediction.
+#' @param y A numeric response vector corresponding to \code{x}.
+#'
+#' @details
+#' The function computes conditional CDF values using
+#' \code{predict_spqrx(..., type = "CDF")} and compares the sorted
+#' empirical CDF values against theoretical Uniform(0,1) quantiles.
+#'
+#' This diagnostic assesses overall distributional calibration.
+#' Deviations from the 45-degree line indicate model misspecification
+#' or poor fit in certain regions of the conditional distribution.
+#'
+#' @return A \code{ggplot2} object representing the QQ-plot.
+#'
+#' @examples
+#' \dontrun{
+#' fit <- spqrx(...)
+#' p <- eval.plot.qqplot(fit, x_test, y_test)
+#' print(p)
+#' }
+#'
+#' @importFrom ggplot2 ggplot aes geom_point geom_abline coord_equal
+#' @importFrom ggplot2 labs theme_classic theme element_text
+#' @export
+eval.plot.qqplot <- function(model, x, y)
+{
+
+
+  # Get CDF values
+  cdf_values <- predict_spqrx(model.spqr, x, y, type = "CDF")
+  cdf_values <- as.numeric(cdf_values)
+
+  # Sort
+  cdf_sorted <- sort(cdf_values)
+  n <- length(cdf_sorted)
+
+  # Theoretical uniform quantiles
+  u_theoretical <- (1:n) / (n + 1)
+
+  df_plot <- data.frame(
+    Theoretical = u_theoretical,
+    Empirical   = cdf_sorted
+  )
+
+  ggplot2::ggplot(df_plot, ggplot2::aes(x = Theoretical, y = Empirical)) +
+    ggplot2::geom_point(size = 1.5, shape = 16) +
+    ggplot2::geom_abline(intercept = 0, slope = 1, linetype = "solid", linewidth = 1) +
+    ggplot2::coord_equal() +
+    ggplot2::labs(
+      x = "Theoretical Quantiles (Uniform(0,1))",
+      y = "Empirical Conditional CDF Values",
+      title = "Goodess of Fit"
+    ) +
+    ggplot2::theme_classic(base_size = 14) +
+    ggplot2::theme(
+      plot.title = element_text(hjust = 0.5),
+      axis.title = element_text(face = "plain")
+    )
+
+
+
+
+}
+
+
+
+
 #' Plot Predicted Probability Density Function (PDF) for a Single Observation
 #'
 #' Generates a plot of the predicted probability density function (PDF) for a single observation
@@ -2001,3 +2076,4 @@ eval.plot.pdf <- function(model, x0, npdf_points = 500)
 
 
 }
+

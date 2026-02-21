@@ -17,6 +17,15 @@ scales.func = function(X){
 
 
 
+#' Generate data from Simulation Study in SPQRx
+#'
+#' Generate covaraites from uniform distribution
+#'
+#'
+#' @param n The data points
+#'
+#' @return Returns a list
+#'
 #' @export
 generate.simulation.extremes <- function(n = 1000, n.knots = 25)
 {
@@ -116,11 +125,34 @@ generate.simulation.extremes <- function(n = 1000, n.knots = 25)
 
 }
 
+
+
+#' @export
+generate.simulation.original <- function(n = 5000 , p = 6)
+{
+
+  x_1 <- runif(n)
+  x_2<- runif(n)
+  x_3 <- runif(n)
+
+
+  X <- cbind(x_1, x_2, x_3)
+
+
+  expit <- 1/(1+exp(-1+5*X[,1]*X[,2]))
+  Y <- rbeta(n,10*expit,10*(1-expit))
+  Y <- matrix(Y, ncol = 1)
+
+
+  return (list(X = X, Y = Y))
+}
+
+
 #' @export
 generate.simulation.conditionial <- function(n)
 {
 
-  set.seed(919)
+
   n <- 5000
   p <- 3
   Sigma <- matrix(c(1,0.6,0.4,0.6,1,0.8,0.4,0.8,1),3,3)
@@ -134,6 +166,10 @@ generate.simulation.conditionial <- function(n)
 
   uniform_x_covariate <- matrix ( runif(n), ncol = 1)
   X <- cbind(X, uniform_x_covariate)
+
+
+  Y <- matrix(Y , ncol = 1)
+
 
   data <- list(X = X, Y = Y)
 
