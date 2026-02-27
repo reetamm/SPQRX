@@ -1530,7 +1530,7 @@ predict_model.spqrx_model <- function(object, newdata, ...) {
     object = object,
     x = newdata,
     type = "QF",
-    tau = 0.5,
+    tau = object$current_tau,
     normalize_input = FALSE
   )
 
@@ -1570,6 +1570,7 @@ eval.explain.lime <- function(model,
                               original_output = FALSE)
 {
 
+  model$current_tau <- tau
 
   n_features <- ncol(x_training)
 
