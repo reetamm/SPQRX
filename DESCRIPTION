@@ -1,6 +1,6 @@
 Package: SPQRX
 Type: Package
-Title: SPQRX: Semi-Parametric Quantile Regression Neural Networks
+Title: SPQRX: Semi-Parametric Quantile Regression for eXtremes
 Version: 0.1.0
 Authors@R: c(person("Reetam", "Majumder", email = "reetam.m303@gmail.com", role = c("aut","cre")),
              person("Dalton", "Oxford", email = "daltono@uark.edu", role = c("aut")), 

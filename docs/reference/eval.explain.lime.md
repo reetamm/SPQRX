@@ -40,7 +40,7 @@ eval.explain.lime(
 - n_permutations:
 
   Integer. Number of permutations used by
-  [`lime::explain()`](https://rdrr.io/pkg/lime/man/explain.html).
+  [`lime::explain()`](https://lime.data-imaginist.com/reference/explain.html).
 
 - original_output:
 
