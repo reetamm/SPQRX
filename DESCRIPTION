@@ -2,11 +2,15 @@ Package: SPQRX
 Type: Package
 Title: SPQRX: Semi-Parametric Quantile Regression Neural Networks
 Version: 0.1.0
-Authors@R: person("Dalton", "YourLastName", email = "dalton@example.com", role = c("aut", "cre"))
+Authors@R: c(person("Reetam", "Majumder", email = "reetam.m303@gmail.com", role = c("aut","cre")),
+             person("Dalton", "Oxford", email = "daltono@uark.edu", role = c("aut")), 
+             person("Jordan", "Richards", email = "Jordan.Richards@ed.ac.uk", role = c("ctb")))
 Description: Semi-parametric quantile regression for extreme quantile levels using neural network models.
+Maintainer: Reetam Majumder <reetam.m303@gmail.com>
 License: MIT
 Encoding: UTF-8
-url: https://reetamm.github.io/SPQRX
+URL: https://reetamm.github.io/SPQRX/
+BugReports: https://github.com/reetamm/SPQRX/issues
 LazyData: true
 Imports:
     stats,
