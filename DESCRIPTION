@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: c(person("Reetam", "Majumder", email = "reetam.m303@gmail.com", role = c("aut","cre")),
              person("Dalton", "Oxford", email = "daltono@uark.edu", role = c("aut")), 
              person("Jordan", "Richards", email = "Jordan.Richards@ed.ac.uk", role = c("ctb")))
-Description: Semi-parametric quantile regression for extreme quantile levels using neural network models.
+Description: Bulk-and-tail density regression using neural networks
 License: MIT
 Encoding: UTF-8
 URL: https://reetamm.github.io/SPQRX/
