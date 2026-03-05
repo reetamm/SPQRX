@@ -1,4 +1,4 @@
-# SPQRX ![](reference/figures/logo.jpg)
+# SPQRX
 
 SPQRX (Semi-Parametric Quantile Regression for eXtremes) performs
 bulk-and-tail density regression using neural networks. The package
