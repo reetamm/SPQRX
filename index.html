@@ -56,7 +56,11 @@
 <img src="logo.png" class="logo" alt=""><h1 id="spqrx-">SPQRX <a class="anchor" aria-label="anchor" href="#spqrx-"></a>
 </h1>
 </div>
-<p>SPQRX (Semi-Parametric Quantile Regression for eXtremes) performs bulk-and-tail density regression using neural networks. The package implements the methodology from <a href="https://arxiv.org/abs/2504.19994" class="external-link">this paper on arXiv</a>, and is built around the <code>keras3</code> library in <code>R</code>.</p>
+<p>SPQRX (Semi-Parametric Quantile Regression for eXtremes) performs bulk-and-tail density regression using neural networks. The package implements the methodology from <a href="https://link.springer.com/article/10.1007/s10687-026-00533-y" class="external-link">Majumder and Richards (2026)</a>, and is built around the <code>keras3</code> library in <code>R</code>.</p>
+<blockquote>
+<p>🚧 <strong>Warning!</strong></p>
+<p>This package is currently under development, and several functions might not work as intended.</p>
+</blockquote>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -64,6 +68,52 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"reetamm/SPQRX"</span><span class="op">)</span></span></code></pre></div>
+<p>A minimum working example of fitting an SPQRX model to housing data in Arkansas, US, is provided below.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://reetamm.github.io/SPQRX/">SPQRX</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Import the Arkansas housing prices dataset</span></span>
+<span><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="va">housing</span></span>
+<span></span>
+<span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span> <span class="op">(</span> <span class="va">dataset</span><span class="op">$</span><span class="va">price</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'bedrooms'</span>, <span class="st">'batchrooms'</span>, <span class="st">'squareFeet'</span>, <span class="st">'lon'</span>, <span class="st">'lat'</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/preprocessing.data.html">preprocessing.data</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, n.knots <span class="op">=</span> <span class="fl">25</span>, testing_ratio <span class="op">=</span> <span class="fl">0.2</span>, valid_ratio <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x_training</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">x_training</span></span>
+<span><span class="va">x_validation</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">x_validation</span></span>
+<span><span class="va">x_testing</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">x_testing</span></span>
+<span></span>
+<span><span class="va">y_training</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">y_training</span></span>
+<span><span class="va">y_validation</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">y_validation</span></span>
+<span><span class="va">y_testing</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">y_testing</span></span>
+<span></span>
+<span><span class="va">p_a</span> <span class="op">=</span> <span class="fl">0.95</span></span>
+<span><span class="va">p_b</span> <span class="op">=</span> <span class="fl">0.999</span></span>
+<span><span class="va">c1</span> <span class="op">=</span> <span class="fl">30</span></span>
+<span><span class="va">c2</span> <span class="op">=</span> <span class="fl">5</span></span>
+<span></span>
+<span><span class="va">hyperparameter</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create.packages.hyperparameter.html">create.packages.hyperparameter</a></span><span class="op">(</span>p_a <span class="op">=</span> <span class="va">p_a</span> , p_b <span class="op">=</span> <span class="va">p_b</span> , c1 <span class="op">=</span> <span class="va">c1</span>, c2 <span class="op">=</span> <span class="va">c2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">model.heavy</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_spqrx.html">fit_spqrx</a></span><span class="op">(</span>input_dim <span class="op">=</span> <span class="fl">5</span>, hidden_dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">45</span> , <span class="fl">45</span><span class="op">)</span>, n.knots <span class="op">=</span> <span class="fl">25</span>, x_training <span class="op">=</span> <span class="va">x_training</span>, </span>
+<span>                   x_validation <span class="op">=</span> <span class="va">x_validation</span>, y_training <span class="op">=</span> <span class="va">y_training</span>, y_validation <span class="op">=</span> <span class="va">y_validation</span>,</span>
+<span>                   hyperparameter <span class="op">=</span> <span class="va">hyperparameter</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># evaluate model fit</span></span>
+<span><span class="fu"><a href="reference/eval.plot.qexp.html">eval.plot.qexp</a></span><span class="op">(</span><span class="va">model.heavy</span>, <span class="va">x_testing</span>, <span class="va">y_testing</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="do">## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="do">## functions.</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="do">## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="do">## functions.</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="do">## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="do">## functions.</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="do">## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="do">## functions.</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="do">## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="do">## functions.</span></span></code></pre></div>
+<p><img src="README_files/figure-gfm/unnamed-chunk-3-1.png"><!-- --></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
