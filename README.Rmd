@@ -10,9 +10,9 @@ SPQRX (Semi-Parametric Quantile Regression for eXtremes) performs bulk-and-tail 
 >
 > This package is currently under development, and several functions might not work as intended.
 
-## Installation
+# Installation
 
-You can install the development version of SPQRX from [GitHub](https://github.com/) with:
+You can install the development version of SPQRX from GitHub with:
 
 ```{r, echo=T, eval=F}
 # install.packages("devtools")
@@ -51,10 +51,8 @@ hyperparameter <- create.packages.hyperparameter(p_a = p_a , p_b = p_b , c1 = c1
 
 model.heavy <- fit_spqrx(input_dim = 5, hidden_dim = c(45 , 45), n.knots = 25, x_training = x_training, 
                    x_validation = x_validation, y_training = y_training, y_validation = y_validation,
-                   hyperparameter = hyperparameter)
-
+                   hyperparameter = hyperparameter, pre_train = F)
 ```
-
 
 ```{r, echo=T}
 # evaluate model fit

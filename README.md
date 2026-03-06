@@ -12,10 +12,9 @@ and is built around the `keras3` library in `R`.
 > This package is currently under development, and several functions
 > might not work as intended.
 
-## Installation
+# Installation
 
-You can install the development version of SPQRX from
-[GitHub](https://github.com/) with:
+You can install the development version of SPQRX from GitHub with:
 
 ``` r
 # install.packages("devtools")
