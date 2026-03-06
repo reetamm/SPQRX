@@ -100,21 +100,11 @@
 <span></span>
 <span><span class="va">model.heavy</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_spqrx.html">fit_spqrx</a></span><span class="op">(</span>input_dim <span class="op">=</span> <span class="fl">5</span>, hidden_dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">45</span> , <span class="fl">45</span><span class="op">)</span>, n.knots <span class="op">=</span> <span class="fl">25</span>, x_training <span class="op">=</span> <span class="va">x_training</span>, </span>
 <span>                   x_validation <span class="op">=</span> <span class="va">x_validation</span>, y_training <span class="op">=</span> <span class="va">y_training</span>, y_validation <span class="op">=</span> <span class="va">y_validation</span>,</span>
-<span>                   hyperparameter <span class="op">=</span> <span class="va">hyperparameter</span><span class="op">)</span></span></code></pre></div>
+<span>                   hyperparameter <span class="op">=</span> <span class="va">hyperparameter</span>, pre_train <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># evaluate model fit</span></span>
 <span><span class="fu"><a href="reference/eval.plot.qexp.html">eval.plot.qexp</a></span><span class="op">(</span><span class="va">model.heavy</span>, <span class="va">x_testing</span>, <span class="va">y_testing</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="do">## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="do">## functions.</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="do">## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="do">## functions.</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="do">## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis</span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="do">## functions.</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="do">## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="do">## functions.</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="do">## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="do">## functions.</span></span></code></pre></div>
-<p><img src="README_files/figure-gfm/unnamed-chunk-3-1.png"><!-- --></p>
+<p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
 </div>
 
   </main><aside class="col-md-3"><div class="links">
