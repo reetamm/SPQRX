@@ -2,6 +2,17 @@
 output: github_document
 ---
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
 # SPQRX <img src="man/figures/logo.png" align="right" height="120"/>
 
 SPQRX (Semi-Parametric Quantile Regression for eXtremes) performs bulk-and-tail density regression using neural networks. The package implements the methodology from [Majumder and Richards (2026)](https://link.springer.com/article/10.1007/s10687-026-00533-y), and is built around the `keras3` library in `R`.

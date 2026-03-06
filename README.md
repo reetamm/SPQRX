@@ -1,4 +1,6 @@
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # SPQRX <img src="man/figures/logo.png" align="right" height="120"/>
 
 SPQRX (Semi-Parametric Quantile Regression for eXtremes) performs
@@ -54,7 +56,7 @@ hyperparameter <- create.packages.hyperparameter(p_a = p_a , p_b = p_b , c1 = c1
 
 model.heavy <- fit_spqrx(input_dim = 5, hidden_dim = c(45 , 45), n.knots = 25, x_training = x_training, 
                    x_validation = x_validation, y_training = y_training, y_validation = y_validation,
-                   hyperparameter = hyperparameter)
+                   hyperparameter = hyperparameter, pre_train = F)
 ```
 
 ``` r
@@ -62,15 +64,4 @@ model.heavy <- fit_spqrx(input_dim = 5, hidden_dim = c(45 , 45), n.knots = 25, x
 eval.plot.qexp(model.heavy, x_testing, y_testing)
 ```
 
-    ## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis
-    ## functions.
-    ## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis
-    ## functions.
-    ## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis
-    ## functions.
-    ## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis
-    ## functions.
-    ## Warning in mSpline(y, knots = knots, Boundary.knots = c(0, 1), intercept = TRUE, : Some 'x' values beyond boundary knots may cause ill-conditioned basis
-    ## functions.
-
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
