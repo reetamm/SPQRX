@@ -20,7 +20,6 @@ Imports:
     Rcpp,
     RcppArmadillo,
     reticulate,
-    tensorflow,
     keras3,
     lime
 LinkingTo:
