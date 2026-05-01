@@ -16,6 +16,7 @@ and is built around the `keras3` library in `R`.
 You can install the development version of SPQRX from GitHub with:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("reetamm/SPQRX")
 ```
@@ -24,6 +25,7 @@ A minimum working example of fitting an SPQRX model to housing data in
 Arkansas, US, is provided below.
 
 ``` r
+
 library(SPQRX)
 
 # Import the Arkansas housing prices dataset
@@ -57,6 +59,7 @@ model.heavy <- fit_spqrx(input_dim = 5, hidden_dim = c(45 , 45), n.knots = 25, x
 ```
 
 ``` r
+
 # evaluate model fit
 eval.plot.qexp(model.heavy, x_testing, y_testing)
 ```
