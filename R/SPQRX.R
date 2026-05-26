@@ -15,7 +15,6 @@
 #' @keywords internal
 xi_custom_activation <- function(x) {
   0.5 * keras3::activation_sigmoid(x[keras3::all_dims(),1:1])#(0,0.5)
-  # 0.5 * activation_tanh(x[all_dims(),1:1]) +0.1 #(-0.4,0.6)
 }
 
 
@@ -40,7 +39,7 @@ xi_custom_activation <- function(x) {
 #' @return An object of class `"spqrx_model"`.
 #'
 #' @keywords internal
-create.package.model <- function(model, n.knots, knots, hyperparameter = NULL, normalizer = NULL,
+create_package_model <- function(model, n.knots, knots, hyperparameter = NULL, normalizer = NULL,
                                  variable_names = NULL, spqrx = TRUE)
 {
   return ( structure(
@@ -70,7 +69,7 @@ create.package.model <- function(model, n.knots, knots, hyperparameter = NULL, n
 #' @return A list containing normalization parameters.
 #'
 #' @keywords internal
-create.package.normalize.list <- function(x_std, x_mean, y_max, y_min)
+create_package_normalize_list <- function(x_std, x_mean, y_max, y_min)
 {
   return (list(x_std = x_std, x_mean = x_mean, y_max = y_max, y_min = y_min))
 }
@@ -113,7 +112,7 @@ create.package.normalize.list <- function(x_std, x_mean, y_max, y_min)
 #' )
 #'
 #' @export
-create.packages.hyperparameter <- function(p_a = 0.9, p_b = 0.99, c1 = 25, c2 = 5, epochs = 200,
+create_packages_hyperparameter <- function(p_a = 0.9, p_b = 0.99, c1 = 25, c2 = 5, epochs = 200,
                                            batch_size = 300, activation = 'relu') {
   return (list(p_a = p_a, p_b = p_b, c1 = c1, c2 = c2,epochs = epochs, batch_size = batch_size,
                activation = activation))
@@ -132,7 +131,6 @@ create.packages.hyperparameter <- function(p_a = 0.9, p_b = 0.99, c1 = 25, c2 = 
 #'
 #' @param x Numeric matrix of covariates.
 #' @param y Numeric vector or matrix of response values.
-#' @param n.knots Integer. Number of spline knots.
 #' @param testing_ratio Proportion of data allocated to testing.
 #' @param valid_ratio Proportion of training data allocated to validation.
 #' @param normalize Logical. If TRUE, standardizes predictors and rescales response.
@@ -140,12 +138,11 @@ create.packages.hyperparameter <- function(p_a = 0.9, p_b = 0.99, c1 = 25, c2 = 
 #' @return A list containing:
 #' \itemize{
 #'   \item Training, validation, and testing splits
-#'   \item Spline knot locations
 #'   \item Normalization metadata (if applicable)
 #' }
 #'
 #' @export
-preprocessing.data <- function(x, y, n.knots,
+preprocessing_data <- function(x, y,
                                testing_ratio = 0.1,
                                valid_ratio = 0.1,
                                normalize = FALSE)
@@ -179,7 +176,7 @@ preprocessing.data <- function(x, y, n.knots,
     y_testing  <- (y_testing  - y_min) / (y_max - y_min)
     y <- (y - y_min) / (y_max - y_min)
 
-    normalizer <- create.package.normalize.list(s.x, m.x, y_max, y_min)
+    normalizer <- create_package_normalize.list(s.x, m.x, y_max, y_min)
 
   }
 
@@ -196,10 +193,6 @@ preprocessing.data <- function(x, y, n.knots,
   y_training <- y_training[-validation_index, , drop = FALSE]
 
 
-  probs <- seq(0, 1, length.out = n.knots)[-c(1, n.knots)]
-  knots = quantile(y,probs=seq(1/(n.knots-2), 1-1/(n.knots-2), length=n.knots-3))
-
-
   if (normalize){
     return (
       list(
@@ -209,13 +202,6 @@ preprocessing.data <- function(x, y, n.knots,
         y_training = y_training,
         y_testing = y_testing,
         y_validation = y_validation,
-        m_basis_training = m_basis_training,
-        m_basis_testing = m_basis_testing,
-        m_basis_validation = m_basis_validation,
-        i_basis_training = i_basis_training,
-        i_basis_testing = i_basis_testing,
-        i_basis_validation = i_basis_validation,
-        knots = knots,
         normalizer = normalizer
       )
     )
@@ -331,7 +317,7 @@ SPQRX <- function(input_dim, hidden_dim, k, activation = 'relu') {
 #' @param i_basis_validation Numeric matrix of integrated spline basis
 #'   evaluations for the validation responses.
 #' @param hyperparameter List. Model training configuration created by
-#'   \code{create.packages.hyperparameter()}, containing elements such
+#'   \code{create_packages_hyperparameter()}, containing elements such
 #'   as `epochs`, `batch_size`, and `activation`.
 #'
 #' @return A trained \code{keras_model} object corresponding to the
@@ -423,7 +409,7 @@ in.fit.spqr <- function(input_dim, hidden_dim, n.knots,knots, x_training, x_vali
 #' @param y_training Numeric vector or matrix of training responses.
 #' @param y_validation Numeric vector or matrix of validation responses.
 #' @param hyperparameter List created by
-#'   \code{create.packages.hyperparameter()} specifying training
+#'   \code{create_packages_hyperparameter()} specifying training
 #'   configuration (e.g., epochs, batch size).
 #' @param pre_normalize Logical. Included for API consistency.
 #'   Currently does not alter preprocessing behavior.
@@ -476,7 +462,7 @@ fit.spqr <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, y
 
   nas_sum <- sum ( is.na(x_training) )  + sum ( is.na(x_validation) ) + sum ( is.na(y_training) ) + sum(  is.na(y_validation) )
 
-  normalizer <- create.package.normalize.list(s.x, m.x, y_max = y_max, y_min = y_min)
+  normalizer <- create_package_normalize_list(s.x, m.x, y_max = y_max, y_min = y_min)
 
 
 
@@ -508,10 +494,11 @@ fit.spqr <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, y
 
   if (package.it) {
     if (!pre_normalize) {
-      return (create.package.model(model = model, n.knots = n.knots, knots = knots,
+
+      return (create_package_model(model = model, n.knots = n.knots, knots = knots,
                                    normalizer = normalizer, variable_names = variable_names, spqrx = FALSE))
     }
-    return (create.package.model(model = model, n.knots = n.knots, knots = knots,
+    return (create_package_model(model = model, n.knots = n.knots, knots = knots,
                                  normalizer = normalizer, variable_names = variable_names, spqrx = FALSE))
   }else {
     return (model)
@@ -585,7 +572,7 @@ fit.spqrx <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, 
 
   nas_sum <- sum ( is.na(x_training) )  + sum ( is.na(x_validation) ) + sum ( is.na(y_training) ) + sum(  is.na(y_validation) )
 
-  normalizer <- create.package.normalize.list(s.x, m.x, y_max = y_max, y_min = y_min)
+  normalizer <- create_package_normalize_list(s.x, m.x, y_max = y_max, y_min = y_min)
 
 
 
@@ -624,9 +611,9 @@ fit.spqrx <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, 
 
   if (package.it) {
     if (!pre_normalize) {
-      return (create.package.model(model = model.heavy, n.knots = n.knots, knots = knots, hyperparameter = hyperparameter, normalizer = normalizer, variable_names = variable_names))
+      return ( create_package_model(model = model.heavy, n.knots = n.knots, knots = knots, hyperparameter = hyperparameter, normalizer = normalizer, variable_names = variable_names))
     }
-    return (create.package.model(model = model.heavy, n.knots = n.knots, knots = knots, hyperparameter = hyperparameter , normalizer = normalizer,
+    return ( create_package_model(model = model.heavy, n.knots = n.knots, knots = knots, hyperparameter = hyperparameter , normalizer = normalizer,
                                  spqrx = TRUE))
   }else {
     return (model.heavy)
@@ -819,7 +806,7 @@ in.fit.spqrx <- function(input_dim, hidden_dim, n.knots,knots, x_training, x_val
 #' @param y_training Numeric vector of training responses.
 #' @param y_validation Numeric vector of validation responses.
 #' @param hyperparameter List of hyperparameters. If \code{NULL},
-#'   default values are generated via \code{create.packages.hyperparameter()}.
+#'   default values are generated via \code{create_packages_hyperparameter()}.
 #' @param package.it Logical. Passed to lower-level fitting routines to
 #'   determine whether the model should be returned as a packaged object. If false, passes back
 #'   a trained keras object.
@@ -840,7 +827,7 @@ fit_spqrx <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, 
 
   if (is.null(hyperparameter)) {
     # Just getting the default
-    hyperparameter <- create.packages.hyperparameter()
+    hyperparameter <- create_packages_hyperparameter()
   }else{
 
 
@@ -892,7 +879,7 @@ fit_spqrx <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, 
 #' @param y Optional numeric vector of response values. Required for
 #'   \code{type = "CDF"} and \code{type = "PDF"}.
 #' @param type Character string specifying prediction type:
-#'   \code{"QF"} (quantile function), \code{"CDF"}, or \code{"PDF"}.
+#'   \code{"QF"} (quantile function), \code{"CDF"},\code{"XI"}, or \code{"PDF"}.
 #' @param tau Numeric value or vector of quantile levels in (0,1).
 #'   Used when \code{type = "QF"}.
 #' @param normalize_input Logical. If FALSE (default), covariates and
@@ -905,6 +892,7 @@ fit_spqrx <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, 
 #'   \item For \code{type = "QF"}: Matrix of predicted quantiles.
 #'   \item For \code{type = "CDF"}: Matrix or vector of cumulative probabilities.
 #'   \item For \code{type = "PDF"}: Matrix or vector of density values.
+#'   \item For \code{type = "XI"}: Matrix which is a column vector of the XI's.
 #' }
 #'
 #' @export
@@ -1110,7 +1098,21 @@ predict_spqrx<- function(object, x, y = NULL , type = 'QF', tau = 0.5, normalize
 
         }
 
-    }
+      } else if (type == 'XI'){
+        i_basis <- matrix(0, nrow = nrow(x), ncol = n.knots)
+
+
+        temp_model <- object$model
+
+
+        pred <- as.matrix(temp_model(list(
+          covariates = x,
+          data = matrix(0, nrow = nrow(x), ncol = 1),
+          I_basis = i_basis
+        )))
+
+        return(as.matrix(pred[, (object$n.knots + 1)]))
+      }
 
   }
 
@@ -1149,7 +1151,7 @@ predict_spqrx<- function(object, x, y = NULL , type = 'QF', tau = 0.5, normalize
 #' }
 #'
 #' @keywords internal
-eval.explain.ALE<- function(model,
+eval_explain_ALE<- function(model,
                                    x,
                                    tau = 0.5,
                                    k = NULL,
@@ -1246,50 +1248,91 @@ eval.explain.ALE<- function(model,
 #' @param tau Numeric vector of quantile levels in (0,1).
 #' @param var.indexs Integer vector specifying the indices of variables
 #'   for which importance is computed.
+#' @param type Provides the output of model to be explain in this case either
+#'   Quantile function or XI parameter for extremes
 #'
 #' @return A matrix of variable importance values.
 #'   Rows correspond to variables and columns correspond to quantile levels.
 #'
 #' @export
-eval.explain.VI <- function(model, x, tau = seq(0.1, 0.9, 0.1),var.indexs = c(1, 2))
+eval_explain_VI <- function(model, x, tau = seq(0.1, 0.9, 0.1),
+                            var.indexs = c(1, 2), type = 'QF')
 {
 
-  varmatrix <- NULL
+  if(type == 'QF'){
+    varmatrix <- NULL
 
-  for (var.index in var.indexs)  {
+    for (var.index in var.indexs)  {
 
-    result <- eval.explain.QALE(model, x, tau = tau, var.index = var.index)
-
-
-    x_vals <- result$x
-    f3 <- result$ALE
-
-    variable.importance <- apply(f3, 2 , sd)
+      result <- eval_explain_QALE(model, x, tau = tau, var.index = var.index)
 
 
+      x_vals <- result$x
+      f3 <- result$ALE
 
-    if (is.null(varmatrix))
-    {
-      varmatrix <- variable.importance
-    }else {
-      varmatrix <- rbind(varmatrix, variable.importance)
+      variable.importance <- apply(f3, 2 , sd)
+
+
+
+      if (is.null(varmatrix))
+      {
+        varmatrix <- variable.importance
+      }else {
+        varmatrix <- rbind(varmatrix, variable.importance)
+      }
+
+
+    }
+
+    if (is.vector(varmatrix)) {
+      varmatrix <- matrix(varmatrix, nrow = 1)
     }
 
 
+
+    var.names <- paste0("variable_", var.indexs)
+    rownames(varmatrix) <- var.names
+    colnames(varmatrix) <- paste0((tau * 100)," %")
+
+    return (varmatrix)
+  }else if(type ==  'XI') {
+    varmatrix <- NULL
+
+    for (var.index in var.indexs)  {
+
+      result <- eval_explain_QALE(model, x, tau = c(1), var.index = var.index,
+                                  type = type)
+
+
+      x_vals <- result$x
+      f3 <- result$ALE
+
+      variable.importance <- apply(f3, 2 , sd)
+
+
+
+      if (is.null(varmatrix))
+      {
+        varmatrix <- variable.importance
+      }else {
+        varmatrix <- rbind(varmatrix, variable.importance)
+      }
+
+
+    }
+
+    if (is.vector(varmatrix)) {
+      varmatrix <- matrix(varmatrix, nrow = 1)
+    }
+
+
+
+    var.names <- paste0("variable_", var.indexs)
+    rownames(varmatrix) <- var.names
+
+    return (varmatrix)
+
   }
-
-  if (is.vector(varmatrix)) {
-    varmatrix <- matrix(varmatrix, nrow = 1)
-  }
-
-
-
-  var.names <- paste0("variable_", var.indexs)
-  rownames(varmatrix) <- var.names
-  colnames(varmatrix) <- paste0((tau * 100)," %")
-
-  return (varmatrix)
-
 }
 
 
@@ -1327,7 +1370,7 @@ eval.explain.VI <- function(model, x, tau = seq(0.1, 0.9, 0.1),var.indexs = c(1,
 #' Otherwise, the full \code{shapr} explanation object.
 #'
 #' @export
-eval.explain.shapr <- function(model , x_training, x_explain, y_training, y_explain, type = 'QF', tau = 0.5, shapley_method = 'empirical',
+eval_explain_shapr <- function(model , x_training, x_explain, y_training, y_explain, type = 'QF', tau = 0.5, shapley_method = 'empirical',
                                variable_names = NULL, original_output = FALSE)
 {
   tf <- get("tf", envir = asNamespace("SPQRX"))
@@ -1348,6 +1391,9 @@ eval.explain.shapr <- function(model , x_training, x_explain, y_training, y_expl
       return (returnBack)
     } else if (type == 'PDF') {
       returnBack <- predict_spqrx(object, newdata, y_explain, type = 'PDF')
+      return (returnBack)
+    } else if (type == 'XI') {
+      returnBack <- predict_spqrx(object, newdata, type = 'XI')
       return (returnBack)
     }
 
@@ -1386,19 +1432,36 @@ eval.explain.shapr <- function(model , x_training, x_explain, y_training, y_expl
 
   }else if (type == 'CDF') {
 
-    cdf_values <- predict.spqrx(model, x_training, y_training, type = 'CDF')
+    cdf_values <- predict_spqrx(model, x_training, y_training, type = 'CDF')
     mean_cdf <- mean(cdf_values)
 
     shapley_values <- shapr::explain(
         model = model,
         x_train = x_training,
         x_explain = x_explain,
-        approach = "empirical",
+        approach = shapley_method,
         phi0 = mean_cdf,
         predict_model = .shap.predict,
       )
 
     return (shapley_values)
+  } else if (type == 'XI') {
+
+    xi_vector <- predict_spqrx(model, x_training, type = 'XI')
+    mean_xi <- mean(xi_vector)
+    shapley_values <- shapr::explain(
+      model = model,
+      x_train = x_training,
+      x_explain = x_explain,
+      approach = shapley_method,
+      phi0 = mean_xi,
+      predict_model = .shap.predict,
+    )
+
+
+
+    return (shapley_values)
+
   }
 
 
@@ -1429,85 +1492,162 @@ eval.explain.shapr <- function(model , x_training, x_explain, y_training, y_expl
 #' }
 #'
 #' @keywords internal
-eval.explain.QALE <- function(model,
-                                   x,
-                                   tau = seq(0.1, 0.9, 0.1),
-                                   var.index = c(1))
+eval_explain_QALE <- function(model,x, tau = seq(0.1, 0.9, 0.1),var.index = c(1),
+                              type = 'QF')
 {
 
+  if(type == 'QF') {
 
-  X <- x
-  N <- nrow(X)
-  d <- ncol(X)
-  J <- var.index
-  ntau <- length(tau)
+    X <- x
+    N <- nrow(X)
+    d <- ncol(X)
+    J <- var.index
+    ntau <- length(tau)
 
-  knots <- model$knots
-  k <- length(knots) + 3
-
-
-  firstcheck <- class(X[, J[1]]) == "numeric" ||
-    class(X[, J[1]]) == "integer"
-
-  if (!firstcheck)
-    stop("X[,var.index] must be numeric or integer")
+    knots <- model$knots
+    k <- length(knots) + 3
 
 
-  z <- c(min(X[,J]), as.numeric(quantile(X[,J],seq(1/k,1,length.out=k), type=1)))
+    firstcheck <- class(X[, J[1]]) == "numeric" ||
+      class(X[, J[1]]) == "integer"
 
-  z <- unique(z)
-
-  k <- length(z) - 1
-  f3 <- numeric(k)
-
-
-  #a1 <- as.numeric(cut(X[, J], breaks = z, include.lowest = TRUE))
-
-  a1 <- as.numeric(cut(X[, J], breaks = z, include.lowest = TRUE, labels = 1:k))
+    if (!firstcheck)
+      stop("X[,var.index] must be numeric or integer")
 
 
-  X1 <- X
-  X2 <- X
-  X1[, J] <- z[a1]
-  X2[, J] <- z[a1 + 1]
+    z <- c(min(X[,J]), as.numeric(quantile(X[,J],seq(1/k,1,length.out=k), type=1)))
+
+    z <- unique(z)
+
+    k <- length(z) - 1
+    f3 <- numeric(k)
 
 
+    #a1 <- as.numeric(cut(X[, J], breaks = z, include.lowest = TRUE))
+
+    a1 <- as.numeric(cut(X[, J], breaks = z, include.lowest = TRUE, labels = 1:k))
 
 
-
-  y.hat1 <- predict_spqrx(
-    object = model,
-    x = X1,
-    type = 'QF',
-    tau = tau,
-    normalize_output = FALSE
-  )
-
-  y.hat2 <- predict_spqrx(
-    object = model,
-    x = X2,
-    type = 'QF',
-    tau = tau,
-    normalize_output = FALSE
-  )
+    X1 <- X
+    X2 <- X
+    X1[, J] <- z[a1]
+    X2[, J] <- z[a1 + 1]
 
 
 
-  Delta <- y.hat2 - y.hat1
-  if (is.null(dim(Delta)))
-    dim(Delta) <- c(N, 1)
 
 
-  DDelta <- matrix(0, nrow = k, ncol = ntau)
+    y.hat1 <- predict_spqrx(
+      object = model,
+      x = X1,
+      type = 'QF',
+      tau = tau,
+      normalize_output = FALSE
+    )
 
-  for (i in 1:ntau) {
+    y.hat2 <- predict_spqrx(
+      object = model,
+      x = X2,
+      type = 'QF',
+      tau = tau,
+      normalize_output = FALSE
+    )
 
-    DDelta[,i] <- as.numeric(tapply(Delta[,i], a1, mean)) #K-length vector of averaged local effect values
+
+
+    Delta <- y.hat2 - y.hat1
+    if (is.null(dim(Delta)))
+      dim(Delta) <- c(N, 1)
+
+
+    DDelta <- matrix(0, nrow = k, ncol = ntau)
+
+    for (i in 1:ntau) {
+
+      DDelta[,i] <- as.numeric(tapply(Delta[,i], a1, mean)) #K-length vector of averaged local effect values
+    }
+
+    f3 <- rbind(0, apply(DDelta, 2 , cumsum))
+
+    return(list(x = z, ALE = f3))
+
+
+
+  }else if(type == 'XI') {
+
+    X <- x
+    N <- nrow(X)
+    d <- ncol(X)
+    J <- var.index
+    ntau <- length(tau)
+
+    knots <- model$knots
+    k <- length(knots) + 3
+
+
+    firstcheck <- class(X[, J[1]]) == "numeric" ||
+      class(X[, J[1]]) == "integer"
+
+    if (!firstcheck)
+      stop("X[,var.index] must be numeric or integer")
+
+
+    z <- c(min(X[,J]), as.numeric(quantile(X[,J],seq(1/k,1,length.out=k), type=1)))
+
+    z <- unique(z)
+
+    k <- length(z) - 1
+    f3 <- numeric(k)
+
+
+    #a1 <- as.numeric(cut(X[, J], breaks = z, include.lowest = TRUE))
+
+    a1 <- as.numeric(cut(X[, J], breaks = z, include.lowest = TRUE, labels = 1:k))
+
+
+    X1 <- X
+    X2 <- X
+    X1[, J] <- z[a1]
+    X2[, J] <- z[a1 + 1]
+
+
+
+
+
+    y.hat1 <- predict_spqrx(
+      object = model,
+      x = X1,
+      type = 'XI'
+    )
+
+    y.hat2 <- predict_spqrx(
+      object = model,
+      x = X2,
+      type = 'XI',
+      tau = tau
+    )
+
+
+
+    Delta <- y.hat2 - y.hat1
+    if (is.null(dim(Delta)))
+      dim(Delta) <- c(N, 1)
+
+
+    DDelta <- matrix(0, nrow = k, ncol = ntau)
+
+
+
+    DDelta[,1] <- as.numeric(tapply(Delta[,1], a1, mean)) #K-length vector of averaged local effect values
+
+
+    f3 <- rbind(0, apply(DDelta, 2 , cumsum))
+
+    return(list(x = z, ALE = f3))
+
   }
 
-  f3 <- rbind(0, apply(DDelta, 2 , cumsum))
 
-  return(list(x = z, ALE = f3))
 
 }
 
@@ -1529,7 +1669,7 @@ predict_model.spqrx_model <- function(object, newdata, ...) {
   preds <- predict_spqrx(
     object = object,
     x = newdata,
-    type = "QF",
+    type = type,
     tau = object$current_tau,
     normalize_input = FALSE
   )
@@ -1552,6 +1692,8 @@ predict_model.spqrx_model <- function(object, newdata, ...) {
 #' @param tau Numeric quantile level in (0,1) for quantile prediction.
 #' @param n_permutations Integer. Number of permutations used by
 #'   \code{lime::explain()}.
+#' @param type Character string specifying prediction type:
+#'   \code{"QF"} (quantile function), \code{"CDF"},\code{"XI"}, or \code{"PDF"}.
 #' @param original_output Logical. If TRUE, returns the full LIME
 #'   explanation object. If FALSE (default), returns a reshaped
 #'   feature-weight table.
@@ -1562,10 +1704,11 @@ predict_model.spqrx_model <- function(object, newdata, ...) {
 #' Otherwise, the full \code{lime} explanation object.
 #'
 #' @export
-eval.explain.lime <- function(model,
+eval_explain_lime <- function(model,
                               x_training,
                               x_explain,
                               tau = 0.5,
+                              type = 'QF',
                               n_permutations = 5000,
                               original_output = FALSE)
 {
@@ -1611,7 +1754,7 @@ eval.explain.lime <- function(model,
   }
 
   predict_model.spqrx_model <- function(object, newdata, ...) {
-
+    tau <-object$current_tau
     preds <- predict_spqrx(
       object = object,
       x = as.matrix(newdata),
@@ -1632,7 +1775,8 @@ eval.explain.lime <- function(model,
     x_explain_norm,
     explainer,
     n_features = n_features,
-    n_permutations = n_permutations
+    n_permutations = n_permutations,
+    type = type
   )
 
 
@@ -1690,7 +1834,7 @@ eval.explain.lime <- function(model,
 #' }
 #'
 #' @export
-eval.plot.QVI <- function(model, x, var.indexs, lower_quantile = 0.1, upper_quantile = 0.9,
+eval_plot_QVI <- function(model, x, var.indexs, lower_quantile = 0.1, upper_quantile = 0.9,
                           quantile_increment = 0.1)
 
 {
@@ -1750,20 +1894,23 @@ eval.plot.QVI <- function(model, x, var.indexs, lower_quantile = 0.1, upper_quan
 #'   the observation(s) to explain.
 #' @param tau Numeric. Quantile level used for prediction when generating
 #'   LIME explanations. Default is \code{0.5}.
-#'
+#' @param type Character string specifying prediction type:
+#'   \code{"QF"} (quantile function), \code{"CDF"},\code{"XI"}, or \code{"PDF"}.
 #' @return Invisibly returns a \code{ggplot} object showing the LIME
 #'   contribution summary.
 #'
 #' @export
-eval.plot.lime <- function(model, x_training, x_explain, tau = 0.5)
-{
+eval_plot_lime <- function(model, x_training, x_explain,type = 'QF',tau = 0.5) {
+
+
 
   if(is.vector(x_explain)) {
     x_explain <- matrix(x_explain, nrow = 1)
   }
 
 
-  lime_result <- eval.explain.lime(model, x_training, x_explain, tau = tau, original_output = TRUE)
+  lime_result <- eval_explain_lime(model, x_training, x_explain, type = type,
+                                   tau = tau, original_output = TRUE)
 
 
 
@@ -1807,7 +1954,9 @@ eval.plot.lime <- function(model, x_training, x_explain, tau = 0.5)
     ) + ggplot2::theme_minimal()
 
 
-}
+  }
+
+
 
 
 #' Plot SHAP Values
@@ -1826,7 +1975,7 @@ eval.plot.lime <- function(model, x_training, x_explain, tau = 0.5)
 #' @return Invisibly returns \code{NULL}. Produces a ggplot2 plot of SHAP feature contributions.
 #'
 #' @export
-eval.plot.shap <- function(model, x_training, x_explain, y_training, y_explain,
+eval_plot_shap <- function(model, x_training, x_explain, y_training, y_explain,
                            tau = 0.5, shapley_method = 'empirical') {
 
   if (is.vector(x_explain)) {
@@ -1888,7 +2037,7 @@ eval.plot.shap <- function(model, x_training, x_explain, y_training, y_explain,
 #' @return Invisibly returns \code{NULL}. Produces a base R Q-Q plot.
 #'
 #' @export
-eval.plot.qexp <- function(model, x, y, pre_normalize = FALSE) {
+eval_plot_qexp <- function(model, x, y, pre_normalize = FALSE) {
   tf <- get("tf", envir = asNamespace("SPQRX"))
 
 
@@ -1953,7 +2102,7 @@ eval.plot.qexp <- function(model, x, y, pre_normalize = FALSE) {
 #' @importFrom ggplot2 ggplot aes geom_point geom_abline coord_equal
 #' @importFrom ggplot2 labs theme_classic theme element_text
 #' @export
-eval.plot.qqplot <- function(model, x, y)
+eval_plot_qqplot <- function(model, x, y)
 {
 
 
@@ -2021,7 +2170,7 @@ eval.plot.qqplot <- function(model, x, y)
 #' }
 #'
 #' @export
-eval.plot.pdf <- function(model, x0, npdf_points = 500)
+eval_plot_pdf <- function(model, x0, npdf_points = 500)
 {
 
     if (is.vector(x0)) {
