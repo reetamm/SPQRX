@@ -1669,7 +1669,7 @@ predict_model.spqrx_model <- function(object, newdata, ...) {
   preds <- predict_spqrx(
     object = object,
     x = newdata,
-    type = type,
+    type = object$type,
     tau = object$current_tau,
     normalize_input = FALSE
   )
@@ -1714,6 +1714,7 @@ eval_explain_lime <- function(model,
 {
 
   model$current_tau <- tau
+  model$type <- type
 
   n_features <- ncol(x_training)
 
@@ -1775,8 +1776,7 @@ eval_explain_lime <- function(model,
     x_explain_norm,
     explainer,
     n_features = n_features,
-    n_permutations = n_permutations,
-    type = type
+    n_permutations = n_permutations
   )
 
 
