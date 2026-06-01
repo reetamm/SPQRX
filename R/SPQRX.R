@@ -15,7 +15,10 @@
 #' @keywords internal
 xi_custom_activation <- function(x) {
   0.5 * keras3::activation_sigmoid(x[keras3::all_dims(),1:1])#(0,0.5)
+<<<<<<< HEAD
   # 0.5 * activation_tanh(x[all_dims(),1:1]) +0.1 #(-0.4,0.6)
+=======
+>>>>>>> origin/merging-dalton
 }
 
 
@@ -40,7 +43,11 @@ xi_custom_activation <- function(x) {
 #' @return An object of class `"spqrx_model"`.
 #'
 #' @keywords internal
+<<<<<<< HEAD
 create.package.model <- function(model, n.knots, knots, hyperparameter = NULL, normalizer = NULL,
+=======
+create_package_model <- function(model, n.knots, knots, hyperparameter = NULL, normalizer = NULL,
+>>>>>>> origin/merging-dalton
                                  variable_names = NULL, spqrx = TRUE)
 {
   return ( structure(
@@ -70,7 +77,11 @@ create.package.model <- function(model, n.knots, knots, hyperparameter = NULL, n
 #' @return A list containing normalization parameters.
 #'
 #' @keywords internal
+<<<<<<< HEAD
 create.package.normalize.list <- function(x_std, x_mean, y_max, y_min)
+=======
+create_package_normalize_list <- function(x_std, x_mean, y_max, y_min)
+>>>>>>> origin/merging-dalton
 {
   return (list(x_std = x_std, x_mean = x_mean, y_max = y_max, y_min = y_min))
 }
@@ -113,7 +124,11 @@ create.package.normalize.list <- function(x_std, x_mean, y_max, y_min)
 #' )
 #'
 #' @export
+<<<<<<< HEAD
 create.packages.hyperparameter <- function(p_a = 0.9, p_b = 0.99, c1 = 25, c2 = 5, epochs = 200,
+=======
+create_packages_hyperparameter <- function(p_a = 0.9, p_b = 0.99, c1 = 25, c2 = 5, epochs = 200,
+>>>>>>> origin/merging-dalton
                                            batch_size = 300, activation = 'relu') {
   return (list(p_a = p_a, p_b = p_b, c1 = c1, c2 = c2,epochs = epochs, batch_size = batch_size,
                activation = activation))
@@ -132,7 +147,10 @@ create.packages.hyperparameter <- function(p_a = 0.9, p_b = 0.99, c1 = 25, c2 = 
 #'
 #' @param x Numeric matrix of covariates.
 #' @param y Numeric vector or matrix of response values.
+<<<<<<< HEAD
 #' @param n.knots Integer. Number of spline knots.
+=======
+>>>>>>> origin/merging-dalton
 #' @param testing_ratio Proportion of data allocated to testing.
 #' @param valid_ratio Proportion of training data allocated to validation.
 #' @param normalize Logical. If TRUE, standardizes predictors and rescales response.
@@ -140,12 +158,19 @@ create.packages.hyperparameter <- function(p_a = 0.9, p_b = 0.99, c1 = 25, c2 = 
 #' @return A list containing:
 #' \itemize{
 #'   \item Training, validation, and testing splits
+<<<<<<< HEAD
 #'   \item Spline knot locations
+=======
+>>>>>>> origin/merging-dalton
 #'   \item Normalization metadata (if applicable)
 #' }
 #'
 #' @export
+<<<<<<< HEAD
 preprocessing.data <- function(x, y, n.knots,
+=======
+preprocessing_data <- function(x, y,
+>>>>>>> origin/merging-dalton
                                testing_ratio = 0.1,
                                valid_ratio = 0.1,
                                normalize = FALSE)
@@ -179,7 +204,11 @@ preprocessing.data <- function(x, y, n.knots,
     y_testing  <- (y_testing  - y_min) / (y_max - y_min)
     y <- (y - y_min) / (y_max - y_min)
 
+<<<<<<< HEAD
     normalizer <- create.package.normalize.list(s.x, m.x, y_max, y_min)
+=======
+    normalizer <- create_package_normalize.list(s.x, m.x, y_max, y_min)
+>>>>>>> origin/merging-dalton
 
   }
 
@@ -196,10 +225,13 @@ preprocessing.data <- function(x, y, n.knots,
   y_training <- y_training[-validation_index, , drop = FALSE]
 
 
+<<<<<<< HEAD
   probs <- seq(0, 1, length.out = n.knots)[-c(1, n.knots)]
   knots = quantile(y,probs=seq(1/(n.knots-2), 1-1/(n.knots-2), length=n.knots-3))
 
 
+=======
+>>>>>>> origin/merging-dalton
   if (normalize){
     return (
       list(
@@ -209,6 +241,7 @@ preprocessing.data <- function(x, y, n.knots,
         y_training = y_training,
         y_testing = y_testing,
         y_validation = y_validation,
+<<<<<<< HEAD
         m_basis_training = m_basis_training,
         m_basis_testing = m_basis_testing,
         m_basis_validation = m_basis_validation,
@@ -216,6 +249,8 @@ preprocessing.data <- function(x, y, n.knots,
         i_basis_testing = i_basis_testing,
         i_basis_validation = i_basis_validation,
         knots = knots,
+=======
+>>>>>>> origin/merging-dalton
         normalizer = normalizer
       )
     )
@@ -331,7 +366,11 @@ SPQRX <- function(input_dim, hidden_dim, k, activation = 'relu') {
 #' @param i_basis_validation Numeric matrix of integrated spline basis
 #'   evaluations for the validation responses.
 #' @param hyperparameter List. Model training configuration created by
+<<<<<<< HEAD
 #'   \code{create.packages.hyperparameter()}, containing elements such
+=======
+#'   \code{create_packages_hyperparameter()}, containing elements such
+>>>>>>> origin/merging-dalton
 #'   as `epochs`, `batch_size`, and `activation`.
 #'
 #' @return A trained \code{keras_model} object corresponding to the
@@ -370,7 +409,11 @@ in.fit.spqr <- function(input_dim, hidden_dim, n.knots,knots, x_training, x_vali
     optimizer = keras3::optimizer_adam(learning_rate = 0.001)
   )
 
+<<<<<<< HEAD
   c1 <- max(c1, 25)
+=======
+
+>>>>>>> origin/merging-dalton
   checkpoint <- keras3::callback_model_checkpoint(filepath=paste0('runs/','model','/spqr_initial.weights.h5'), monitor = "val_loss", verbose = 0,
                                                   save_best_only = TRUE, save_weights_only = TRUE, mode = "min",
                                                   save_freq = "epoch")
@@ -423,7 +466,11 @@ in.fit.spqr <- function(input_dim, hidden_dim, n.knots,knots, x_training, x_vali
 #' @param y_training Numeric vector or matrix of training responses.
 #' @param y_validation Numeric vector or matrix of validation responses.
 #' @param hyperparameter List created by
+<<<<<<< HEAD
 #'   \code{create.packages.hyperparameter()} specifying training
+=======
+#'   \code{create_packages_hyperparameter()} specifying training
+>>>>>>> origin/merging-dalton
 #'   configuration (e.g., epochs, batch size).
 #' @param pre_normalize Logical. Included for API consistency.
 #'   Currently does not alter preprocessing behavior.
@@ -476,7 +523,11 @@ fit.spqr <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, y
 
   nas_sum <- sum ( is.na(x_training) )  + sum ( is.na(x_validation) ) + sum ( is.na(y_training) ) + sum(  is.na(y_validation) )
 
+<<<<<<< HEAD
   normalizer <- create.package.normalize.list(s.x, m.x, y_max = y_max, y_min = y_min)
+=======
+  normalizer <- create_package_normalize_list(s.x, m.x, y_max = y_max, y_min = y_min)
+>>>>>>> origin/merging-dalton
 
 
 
@@ -508,10 +559,18 @@ fit.spqr <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, y
 
   if (package.it) {
     if (!pre_normalize) {
+<<<<<<< HEAD
       return (create.package.model(model = model, n.knots = n.knots, knots = knots,
                                    normalizer = normalizer, variable_names = variable_names, spqrx = FALSE))
     }
     return (create.package.model(model = model, n.knots = n.knots, knots = knots,
+=======
+
+      return (create_package_model(model = model, n.knots = n.knots, knots = knots,
+                                   normalizer = normalizer, variable_names = variable_names, spqrx = FALSE))
+    }
+    return (create_package_model(model = model, n.knots = n.knots, knots = knots,
+>>>>>>> origin/merging-dalton
                                  normalizer = normalizer, variable_names = variable_names, spqrx = FALSE))
   }else {
     return (model)
@@ -585,7 +644,11 @@ fit.spqrx <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, 
 
   nas_sum <- sum ( is.na(x_training) )  + sum ( is.na(x_validation) ) + sum ( is.na(y_training) ) + sum(  is.na(y_validation) )
 
+<<<<<<< HEAD
   normalizer <- create.package.normalize.list(s.x, m.x, y_max = y_max, y_min = y_min)
+=======
+  normalizer <- create_package_normalize_list(s.x, m.x, y_max = y_max, y_min = y_min)
+>>>>>>> origin/merging-dalton
 
 
 
@@ -624,9 +687,15 @@ fit.spqrx <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, 
 
   if (package.it) {
     if (!pre_normalize) {
+<<<<<<< HEAD
       return (create.package.model(model = model.heavy, n.knots = n.knots, knots = knots, hyperparameter = hyperparameter, normalizer = normalizer, variable_names = variable_names))
     }
     return (create.package.model(model = model.heavy, n.knots = n.knots, knots = knots, hyperparameter = hyperparameter , normalizer = normalizer,
+=======
+      return ( create_package_model(model = model.heavy, n.knots = n.knots, knots = knots, hyperparameter = hyperparameter, normalizer = normalizer, variable_names = variable_names))
+    }
+    return ( create_package_model(model = model.heavy, n.knots = n.knots, knots = knots, hyperparameter = hyperparameter , normalizer = normalizer,
+>>>>>>> origin/merging-dalton
                                  spqrx = TRUE))
   }else {
     return (model.heavy)
@@ -819,7 +888,11 @@ in.fit.spqrx <- function(input_dim, hidden_dim, n.knots,knots, x_training, x_val
 #' @param y_training Numeric vector of training responses.
 #' @param y_validation Numeric vector of validation responses.
 #' @param hyperparameter List of hyperparameters. If \code{NULL},
+<<<<<<< HEAD
 #'   default values are generated via \code{create.packages.hyperparameter()}.
+=======
+#'   default values are generated via \code{create_packages_hyperparameter()}.
+>>>>>>> origin/merging-dalton
 #' @param package.it Logical. Passed to lower-level fitting routines to
 #'   determine whether the model should be returned as a packaged object. If false, passes back
 #'   a trained keras object.
@@ -840,7 +913,11 @@ fit_spqrx <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, 
 
   if (is.null(hyperparameter)) {
     # Just getting the default
+<<<<<<< HEAD
     hyperparameter <- create.packages.hyperparameter()
+=======
+    hyperparameter <- create_packages_hyperparameter()
+>>>>>>> origin/merging-dalton
   }else{
 
 
@@ -892,7 +969,11 @@ fit_spqrx <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, 
 #' @param y Optional numeric vector of response values. Required for
 #'   \code{type = "CDF"} and \code{type = "PDF"}.
 #' @param type Character string specifying prediction type:
+<<<<<<< HEAD
 #'   \code{"QF"} (quantile function), \code{"CDF"}, or \code{"PDF"}.
+=======
+#'   \code{"QF"} (quantile function), \code{"CDF"},\code{"XI"}, or \code{"PDF"}.
+>>>>>>> origin/merging-dalton
 #' @param tau Numeric value or vector of quantile levels in (0,1).
 #'   Used when \code{type = "QF"}.
 #' @param normalize_input Logical. If FALSE (default), covariates and
@@ -905,6 +986,10 @@ fit_spqrx <- function(input_dim, hidden_dim, n.knots, x_training, x_validation, 
 #'   \item For \code{type = "QF"}: Matrix of predicted quantiles.
 #'   \item For \code{type = "CDF"}: Matrix or vector of cumulative probabilities.
 #'   \item For \code{type = "PDF"}: Matrix or vector of density values.
+<<<<<<< HEAD
+=======
+#'   \item For \code{type = "XI"}: Matrix which is a column vector of the XI's.
+>>>>>>> origin/merging-dalton
 #' }
 #'
 #' @export
@@ -1072,7 +1157,11 @@ predict_spqrx<- function(object, x, y = NULL , type = 'QF', tau = 0.5, normalize
             c2 <- model$hyperparameter$c2
 
 
+<<<<<<< HEAD
             temp_returnBack <- predict.spqrk.GPD(model = model.heavy, type = type, Y=NULL, knots = knots, I_basis = i_basis,
+=======
+            temp_returnBack <- speedy.predict.spqrk.GPD(model = model.heavy, type = type, Y=NULL, knots = knots, I_basis = i_basis,
+>>>>>>> origin/merging-dalton
                                             M_basis = m_basis, covariates = x, p_a = p_a, p_b = p_b,  c1 = c1, c2 = c2, tau = tau[index])
 
             if(is.null(returnBack)) {
@@ -1097,7 +1186,11 @@ predict_spqrx<- function(object, x, y = NULL , type = 'QF', tau = 0.5, normalize
           m_basis <- matrix(0 , nrow = dim(x)[1], ncol = n.knots)
 
 
+<<<<<<< HEAD
           returnBack <- predict.spqrk.GPD(model = model.heavy, type = type, Y=NULL, knots = knots, I_basis = i_basis,
+=======
+          returnBack <- speedy.predict.spqrk.GPD(model = model.heavy, type = type, Y=NULL, knots = knots, I_basis = i_basis,
+>>>>>>> origin/merging-dalton
                                           M_basis = m_basis, covariates = x, p_a = p_a, p_b = p_b,  c1 = c1, c2 = c2, tau = tau)
 
           if (normalize_output) {
@@ -1110,7 +1203,25 @@ predict_spqrx<- function(object, x, y = NULL , type = 'QF', tau = 0.5, normalize
 
         }
 
+<<<<<<< HEAD
     }
+=======
+      } else if (type == 'XI'){
+        i_basis <- matrix(0, nrow = nrow(x), ncol = n.knots)
+
+
+        temp_model <- object$model
+
+
+        pred <- as.matrix(temp_model(list(
+          covariates = x,
+          data = matrix(0, nrow = nrow(x), ncol = 1),
+          I_basis = i_basis
+        )))
+
+        return(as.matrix(pred[, (object$n.knots + 1)]))
+      }
+>>>>>>> origin/merging-dalton
 
   }
 
@@ -1149,7 +1260,11 @@ predict_spqrx<- function(object, x, y = NULL , type = 'QF', tau = 0.5, normalize
 #' }
 #'
 #' @keywords internal
+<<<<<<< HEAD
 eval.explain.ALE<- function(model,
+=======
+eval_explain_ALE<- function(model,
+>>>>>>> origin/merging-dalton
                                    x,
                                    tau = 0.5,
                                    k = NULL,
@@ -1246,11 +1361,17 @@ eval.explain.ALE<- function(model,
 #' @param tau Numeric vector of quantile levels in (0,1).
 #' @param var.indexs Integer vector specifying the indices of variables
 #'   for which importance is computed.
+<<<<<<< HEAD
+=======
+#' @param type Provides the output of model to be explain in this case either
+#'   Quantile function or XI parameter for extremes
+>>>>>>> origin/merging-dalton
 #'
 #' @return A matrix of variable importance values.
 #'   Rows correspond to variables and columns correspond to quantile levels.
 #'
 #' @export
+<<<<<<< HEAD
 eval.explain.VI <- function(model, x, tau = seq(0.1, 0.9, 0.1),var.indexs = c(1, 2))
 {
 
@@ -1290,6 +1411,86 @@ eval.explain.VI <- function(model, x, tau = seq(0.1, 0.9, 0.1),var.indexs = c(1,
 
   return (varmatrix)
 
+=======
+eval_explain_VI <- function(model, x, tau = seq(0.1, 0.9, 0.1),
+                            var.indexs = c(1, 2), type = 'QF')
+{
+
+  if(type == 'QF'){
+    varmatrix <- NULL
+
+    for (var.index in var.indexs)  {
+
+      result <- eval_explain_QALE(model, x, tau = tau, var.index = var.index)
+
+
+      x_vals <- result$x
+      f3 <- result$ALE
+
+      variable.importance <- apply(f3, 2 , sd)
+
+
+
+      if (is.null(varmatrix))
+      {
+        varmatrix <- variable.importance
+      }else {
+        varmatrix <- rbind(varmatrix, variable.importance)
+      }
+
+
+    }
+
+    if (is.vector(varmatrix)) {
+      varmatrix <- matrix(varmatrix, nrow = 1)
+    }
+
+
+
+    var.names <- paste0("variable_", var.indexs)
+    rownames(varmatrix) <- var.names
+    colnames(varmatrix) <- paste0((tau * 100)," %")
+
+    return (varmatrix)
+  }else if(type ==  'XI') {
+    varmatrix <- NULL
+
+    for (var.index in var.indexs)  {
+
+      result <- eval_explain_QALE(model, x, tau = c(1), var.index = var.index,
+                                  type = type)
+
+
+      x_vals <- result$x
+      f3 <- result$ALE
+
+      variable.importance <- apply(f3, 2 , sd)
+
+
+
+      if (is.null(varmatrix))
+      {
+        varmatrix <- variable.importance
+      }else {
+        varmatrix <- rbind(varmatrix, variable.importance)
+      }
+
+
+    }
+
+    if (is.vector(varmatrix)) {
+      varmatrix <- matrix(varmatrix, nrow = 1)
+    }
+
+
+
+    var.names <- paste0("variable_", var.indexs)
+    rownames(varmatrix) <- var.names
+
+    return (varmatrix)
+
+  }
+>>>>>>> origin/merging-dalton
 }
 
 
@@ -1327,7 +1528,11 @@ eval.explain.VI <- function(model, x, tau = seq(0.1, 0.9, 0.1),var.indexs = c(1,
 #' Otherwise, the full \code{shapr} explanation object.
 #'
 #' @export
+<<<<<<< HEAD
 eval.explain.shapr <- function(model , x_training, x_explain, y_training, y_explain, type = 'QF', tau = 0.5, shapley_method = 'empirical',
+=======
+eval_explain_shapr <- function(model , x_training, x_explain, y_training, y_explain, type = 'QF', tau = 0.5, shapley_method = 'empirical',
+>>>>>>> origin/merging-dalton
                                variable_names = NULL, original_output = FALSE)
 {
   tf <- get("tf", envir = asNamespace("SPQRX"))
@@ -1349,6 +1554,12 @@ eval.explain.shapr <- function(model , x_training, x_explain, y_training, y_expl
     } else if (type == 'PDF') {
       returnBack <- predict_spqrx(object, newdata, y_explain, type = 'PDF')
       return (returnBack)
+<<<<<<< HEAD
+=======
+    } else if (type == 'XI') {
+      returnBack <- predict_spqrx(object, newdata, type = 'XI')
+      return (returnBack)
+>>>>>>> origin/merging-dalton
     }
 
   }
@@ -1386,19 +1597,47 @@ eval.explain.shapr <- function(model , x_training, x_explain, y_training, y_expl
 
   }else if (type == 'CDF') {
 
+<<<<<<< HEAD
     cdf_values <- predict.spqrx(model, x_training, y_training, type = 'CDF')
+=======
+    cdf_values <- predict_spqrx(model, x_training, y_training, type = 'CDF')
+>>>>>>> origin/merging-dalton
     mean_cdf <- mean(cdf_values)
 
     shapley_values <- shapr::explain(
         model = model,
         x_train = x_training,
         x_explain = x_explain,
+<<<<<<< HEAD
         approach = "empirical",
+=======
+        approach = shapley_method,
+>>>>>>> origin/merging-dalton
         phi0 = mean_cdf,
         predict_model = .shap.predict,
       )
 
     return (shapley_values)
+<<<<<<< HEAD
+=======
+  } else if (type == 'XI') {
+
+    xi_vector <- predict_spqrx(model, x_training, type = 'XI')
+    mean_xi <- mean(xi_vector)
+    shapley_values <- shapr::explain(
+      model = model,
+      x_train = x_training,
+      x_explain = x_explain,
+      approach = shapley_method,
+      phi0 = mean_xi,
+      predict_model = .shap.predict,
+    )
+
+
+
+    return (shapley_values)
+
+>>>>>>> origin/merging-dalton
   }
 
 
@@ -1429,6 +1668,7 @@ eval.explain.shapr <- function(model , x_training, x_explain, y_training, y_expl
 #' }
 #'
 #' @keywords internal
+<<<<<<< HEAD
 eval.explain.QALE <- function(model,
                                    x,
                                    tau = seq(0.1, 0.9, 0.1),
@@ -1470,11 +1710,54 @@ eval.explain.QALE <- function(model,
   X2 <- X
   X1[, J] <- z[a1]
   X2[, J] <- z[a1 + 1]
+=======
+eval_explain_QALE <- function(model,x, tau = seq(0.1, 0.9, 0.1),var.index = c(1),
+                              type = 'QF')
+{
+
+  if(type == 'QF') {
+
+    X <- x
+    N <- nrow(X)
+    d <- ncol(X)
+    J <- var.index
+    ntau <- length(tau)
+
+    knots <- model$knots
+    k <- length(knots) + 3
+
+
+    firstcheck <- class(X[, J[1]]) == "numeric" ||
+      class(X[, J[1]]) == "integer"
+
+    if (!firstcheck)
+      stop("X[,var.index] must be numeric or integer")
+
+
+    z <- c(min(X[,J]), as.numeric(quantile(X[,J],seq(1/k,1,length.out=k), type=1)))
+
+    z <- unique(z)
+
+    k <- length(z) - 1
+    f3 <- numeric(k)
+
+
+    #a1 <- as.numeric(cut(X[, J], breaks = z, include.lowest = TRUE))
+
+    a1 <- as.numeric(cut(X[, J], breaks = z, include.lowest = TRUE, labels = 1:k))
+
+
+    X1 <- X
+    X2 <- X
+    X1[, J] <- z[a1]
+    X2[, J] <- z[a1 + 1]
+>>>>>>> origin/merging-dalton
 
 
 
 
 
+<<<<<<< HEAD
   y.hat1 <- predict_spqrx(
     object = model,
     x = X1,
@@ -1508,6 +1791,119 @@ eval.explain.QALE <- function(model,
   f3 <- rbind(0, apply(DDelta, 2 , cumsum))
 
   return(list(x = z, ALE = f3))
+=======
+    y.hat1 <- predict_spqrx(
+      object = model,
+      x = X1,
+      type = 'QF',
+      tau = tau,
+      normalize_output = FALSE
+    )
+
+    y.hat2 <- predict_spqrx(
+      object = model,
+      x = X2,
+      type = 'QF',
+      tau = tau,
+      normalize_output = FALSE
+    )
+
+
+
+    Delta <- y.hat2 - y.hat1
+    if (is.null(dim(Delta)))
+      dim(Delta) <- c(N, 1)
+
+
+    DDelta <- matrix(0, nrow = k, ncol = ntau)
+
+    for (i in 1:ntau) {
+
+      DDelta[,i] <- as.numeric(tapply(Delta[,i], a1, mean)) #K-length vector of averaged local effect values
+    }
+
+    f3 <- rbind(0, apply(DDelta, 2 , cumsum))
+
+    return(list(x = z, ALE = f3))
+
+
+
+  }else if(type == 'XI') {
+
+    X <- x
+    N <- nrow(X)
+    d <- ncol(X)
+    J <- var.index
+    ntau <- length(tau)
+
+    knots <- model$knots
+    k <- length(knots) + 3
+
+
+    firstcheck <- class(X[, J[1]]) == "numeric" ||
+      class(X[, J[1]]) == "integer"
+
+    if (!firstcheck)
+      stop("X[,var.index] must be numeric or integer")
+
+
+    z <- c(min(X[,J]), as.numeric(quantile(X[,J],seq(1/k,1,length.out=k), type=1)))
+
+    z <- unique(z)
+
+    k <- length(z) - 1
+    f3 <- numeric(k)
+
+
+    #a1 <- as.numeric(cut(X[, J], breaks = z, include.lowest = TRUE))
+
+    a1 <- as.numeric(cut(X[, J], breaks = z, include.lowest = TRUE, labels = 1:k))
+
+
+    X1 <- X
+    X2 <- X
+    X1[, J] <- z[a1]
+    X2[, J] <- z[a1 + 1]
+
+
+
+
+
+    y.hat1 <- predict_spqrx(
+      object = model,
+      x = X1,
+      type = 'XI'
+    )
+
+    y.hat2 <- predict_spqrx(
+      object = model,
+      x = X2,
+      type = 'XI',
+      tau = tau
+    )
+
+
+
+    Delta <- y.hat2 - y.hat1
+    if (is.null(dim(Delta)))
+      dim(Delta) <- c(N, 1)
+
+
+    DDelta <- matrix(0, nrow = k, ncol = ntau)
+
+
+
+    DDelta[,1] <- as.numeric(tapply(Delta[,1], a1, mean)) #K-length vector of averaged local effect values
+
+
+    f3 <- rbind(0, apply(DDelta, 2 , cumsum))
+
+    return(list(x = z, ALE = f3))
+
+  }
+
+
+>>>>>>> origin/merging-dalton
 
 }
 
@@ -1529,8 +1925,13 @@ predict_model.spqrx_model <- function(object, newdata, ...) {
   preds <- predict_spqrx(
     object = object,
     x = newdata,
+<<<<<<< HEAD
     type = "QF",
     tau = 0.5,
+=======
+    type = object$type,
+    tau = object$current_tau,
+>>>>>>> origin/merging-dalton
     normalize_input = FALSE
   )
 
@@ -1552,6 +1953,11 @@ predict_model.spqrx_model <- function(object, newdata, ...) {
 #' @param tau Numeric quantile level in (0,1) for quantile prediction.
 #' @param n_permutations Integer. Number of permutations used by
 #'   \code{lime::explain()}.
+<<<<<<< HEAD
+=======
+#' @param type Character string specifying prediction type:
+#'   \code{"QF"} (quantile function), \code{"CDF"},\code{"XI"}, or \code{"PDF"}.
+>>>>>>> origin/merging-dalton
 #' @param original_output Logical. If TRUE, returns the full LIME
 #'   explanation object. If FALSE (default), returns a reshaped
 #'   feature-weight table.
@@ -1561,16 +1967,30 @@ predict_model.spqrx_model <- function(object, newdata, ...) {
 #' to explained cases and columns correspond to feature weights.
 #' Otherwise, the full \code{lime} explanation object.
 #'
+<<<<<<< HEAD
 #' @import lime
 #' @export
 eval.explain.lime <- function(model,
                               x_training,
                               x_explain,
                               tau = 0.5,
+=======
+#' @export
+eval_explain_lime <- function(model,
+                              x_training,
+                              x_explain,
+                              tau = 0.5,
+                              type = 'QF',
+>>>>>>> origin/merging-dalton
                               n_permutations = 5000,
                               original_output = FALSE)
 {
 
+<<<<<<< HEAD
+=======
+  model$current_tau <- tau
+  model$type <- type
+>>>>>>> origin/merging-dalton
 
   n_features <- ncol(x_training)
 
@@ -1611,7 +2031,11 @@ eval.explain.lime <- function(model,
   }
 
   predict_model.spqrx_model <- function(object, newdata, ...) {
+<<<<<<< HEAD
 
+=======
+    tau <-object$current_tau
+>>>>>>> origin/merging-dalton
     preds <- predict_spqrx(
       object = object,
       x = as.matrix(newdata),
@@ -1690,7 +2114,11 @@ eval.explain.lime <- function(model,
 #' }
 #'
 #' @export
+<<<<<<< HEAD
 eval.plot.QVI <- function(model, x, var.indexs, lower_quantile = 0.1, upper_quantile = 0.9,
+=======
+eval_plot_QVI <- function(model, x, var.indexs, lower_quantile = 0.1, upper_quantile = 0.9,
+>>>>>>> origin/merging-dalton
                           quantile_increment = 0.1)
 
 {
@@ -1750,6 +2178,7 @@ eval.plot.QVI <- function(model, x, var.indexs, lower_quantile = 0.1, upper_quan
 #'   the observation(s) to explain.
 #' @param tau Numeric. Quantile level used for prediction when generating
 #'   LIME explanations. Default is \code{0.5}.
+<<<<<<< HEAD
 #'
 #' @return Invisibly returns a \code{ggplot} object showing the LIME
 #'   contribution summary.
@@ -1758,13 +2187,29 @@ eval.plot.QVI <- function(model, x, var.indexs, lower_quantile = 0.1, upper_quan
 #' @export
 eval.plot.lime <- function(model, x_training, x_explain, tau = 0.5)
 {
+=======
+#' @param type Character string specifying prediction type:
+#'   \code{"QF"} (quantile function), \code{"CDF"},\code{"XI"}, or \code{"PDF"}.
+#' @return Invisibly returns a \code{ggplot} object showing the LIME
+#'   contribution summary.
+#'
+#' @export
+eval_plot_lime <- function(model, x_training, x_explain,type = 'QF',tau = 0.5) {
+
+
+>>>>>>> origin/merging-dalton
 
   if(is.vector(x_explain)) {
     x_explain <- matrix(x_explain, nrow = 1)
   }
 
 
+<<<<<<< HEAD
   lime_result <- eval.explain.lime(model, x_training, x_explain, tau = tau, n_features = ncol(x_training))
+=======
+  lime_result <- eval_explain_lime(model, x_training, x_explain, type = type,
+                                   tau = tau, original_output = TRUE)
+>>>>>>> origin/merging-dalton
 
 
 
@@ -1808,7 +2253,13 @@ eval.plot.lime <- function(model, x_training, x_explain, tau = 0.5)
     ) + ggplot2::theme_minimal()
 
 
+<<<<<<< HEAD
 }
+=======
+  }
+
+
+>>>>>>> origin/merging-dalton
 
 
 #' Plot SHAP Values
@@ -1827,7 +2278,11 @@ eval.plot.lime <- function(model, x_training, x_explain, tau = 0.5)
 #' @return Invisibly returns \code{NULL}. Produces a ggplot2 plot of SHAP feature contributions.
 #'
 #' @export
+<<<<<<< HEAD
 eval.plot.shap <- function(model, x_training, x_explain, y_training, y_explain,
+=======
+eval_plot_shap <- function(model, x_training, x_explain, y_training, y_explain,
+>>>>>>> origin/merging-dalton
                            tau = 0.5, shapley_method = 'empirical') {
 
   if (is.vector(x_explain)) {
@@ -1889,7 +2344,11 @@ eval.plot.shap <- function(model, x_training, x_explain, y_training, y_explain,
 #' @return Invisibly returns \code{NULL}. Produces a base R Q-Q plot.
 #'
 #' @export
+<<<<<<< HEAD
 eval.plot.qexp <- function(model, x, y, pre_normalize = FALSE) {
+=======
+eval_plot_qexp <- function(model, x, y, pre_normalize = FALSE) {
+>>>>>>> origin/merging-dalton
   tf <- get("tf", envir = asNamespace("SPQRX"))
 
 
@@ -1922,6 +2381,84 @@ eval.plot.qexp <- function(model, x, y, pre_normalize = FALSE) {
 
 
 
+<<<<<<< HEAD
+=======
+#' QQ-Plot of Conditional CDF Values for SPQRx Model
+#'
+#' Generates a quantile–quantile (QQ) plot comparing the empirical
+#' conditional CDF values from a fitted SPQRx model to the theoretical
+#' Uniform(0,1) distribution. If the model is well-calibrated, the
+#' points should lie approximately along the 45-degree line.
+#'
+#' @param model A fitted SPQR or SPQRx model object.
+#' @param x A matrix or data frame of covariates used for prediction.
+#' @param y A numeric response vector corresponding to \code{x}.
+#'
+#' @details
+#' The function computes conditional CDF values using
+#' \code{predict_spqrx(..., type = "CDF")} and compares the sorted
+#' empirical CDF values against theoretical Uniform(0,1) quantiles.
+#'
+#' This diagnostic assesses overall distributional calibration.
+#' Deviations from the 45-degree line indicate model misspecification
+#' or poor fit in certain regions of the conditional distribution.
+#'
+#' @return A \code{ggplot2} object representing the QQ-plot.
+#'
+#' @examples
+#' \dontrun{
+#' fit <- spqrx(...)
+#' p <- eval.plot.qqplot(fit, x_test, y_test)
+#' print(p)
+#' }
+#'
+#' @importFrom ggplot2 ggplot aes geom_point geom_abline coord_equal
+#' @importFrom ggplot2 labs theme_classic theme element_text
+#' @export
+eval_plot_qqplot <- function(model, x, y)
+{
+
+
+  # Get CDF values
+  cdf_values <- predict_spqrx(model.spqr, x, y, type = "CDF")
+  cdf_values <- as.numeric(cdf_values)
+
+  # Sort
+  cdf_sorted <- sort(cdf_values)
+  n <- length(cdf_sorted)
+
+  # Theoretical uniform quantiles
+  u_theoretical <- (1:n) / (n + 1)
+
+  df_plot <- data.frame(
+    Theoretical = u_theoretical,
+    Empirical   = cdf_sorted
+  )
+
+  ggplot2::ggplot(df_plot, ggplot2::aes(x = Theoretical, y = Empirical)) +
+    ggplot2::geom_point(size = 1.5, shape = 16) +
+    ggplot2::geom_abline(intercept = 0, slope = 1, linetype = "solid", linewidth = 1) +
+    ggplot2::coord_equal() +
+    ggplot2::labs(
+      x = "Theoretical Quantiles (Uniform(0,1))",
+      y = "Empirical Conditional CDF Values",
+      title = "Goodess of Fit"
+    ) +
+    ggplot2::theme_classic(base_size = 14) +
+    ggplot2::theme(
+      plot.title = element_text(hjust = 0.5),
+      axis.title = element_text(face = "plain")
+    )
+
+
+
+
+}
+
+
+
+
+>>>>>>> origin/merging-dalton
 #' Plot Predicted Probability Density Function (PDF) for a Single Observation
 #'
 #' Generates a plot of the predicted probability density function (PDF) for a single observation
@@ -1947,7 +2484,11 @@ eval.plot.qexp <- function(model, x, y, pre_normalize = FALSE) {
 #' }
 #'
 #' @export
+<<<<<<< HEAD
 eval.plot.pdf <- function(model, x0, npdf_points = 500)
+=======
+eval_plot_pdf <- function(model, x0, npdf_points = 500)
+>>>>>>> origin/merging-dalton
 {
 
     if (is.vector(x0)) {
@@ -2003,3 +2544,7 @@ eval.plot.pdf <- function(model, x0, npdf_points = 500)
 
 
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/merging-dalton

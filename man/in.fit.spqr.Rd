@@ -50,7 +50,11 @@ evaluations for the training responses.}
 evaluations for the validation responses.}
 
 \item{hyperparameter}{List. Model training configuration created by
+<<<<<<< HEAD
 \code{create.packages.hyperparameter()}, containing elements such
+=======
+\code{create_packages_hyperparameter()}, containing elements such
+>>>>>>> origin/merging-dalton
 as `epochs`, `batch_size`, and `activation`.}
 }
 \value{

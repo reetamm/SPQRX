@@ -1,8 +1,14 @@
 Version: 1.0
+<<<<<<< HEAD
 ProjectId: 38941587-fa03-4d5e-8754-3d0f1a86cbdf
 
 RestoreWorkspace: Default
 SaveWorkspace: Default
+=======
+
+RestoreWorkspace: No
+SaveWorkspace: No
+>>>>>>> origin/merging-dalton
 AlwaysSaveHistory: Default
 
 EnableCodeIndexing: Yes
@@ -15,6 +21,10 @@ LaTeX: pdfLaTeX
 
 AutoAppendNewline: Yes
 StripTrailingWhitespace: Yes
+<<<<<<< HEAD
+=======
+LineEndingConversion: Posix
+>>>>>>> origin/merging-dalton
 
 BuildType: Package
 PackageUseDevtools: Yes
