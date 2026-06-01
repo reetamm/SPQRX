@@ -35,7 +35,11 @@ fit_spqrx(
 \item{y_validation}{Numeric vector of validation responses.}
 
 \item{hyperparameter}{List of hyperparameters. If \code{NULL},
+<<<<<<< HEAD
 default values are generated via \code{create.packages.hyperparameter()}.}
+=======
+default values are generated via \code{create_packages_hyperparameter()}.}
+>>>>>>> origin/merging-dalton
 
 \item{package.it}{Logical. Passed to lower-level fitting routines to
 determine whether the model should be returned as a packaged object. If false, passes back

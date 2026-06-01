@@ -55,7 +55,11 @@ Finv.SPQR=function(y){
 
 }
 
+<<<<<<< HEAD
 #' @importFrom evd pgpd
+=======
+library(evd)
+>>>>>>> origin/merging-dalton
 #' @export
 F.GPD=function(y,u=0,scale=1,shape=0.1){
   tf <- get("tf", envir = asNamespace("SPQRX"))
@@ -1046,6 +1050,215 @@ predict.spqrk.GPD <- function(model,
 
 
 
+<<<<<<< HEAD
+=======
+#' @export
+speedy.predict.spqrk.GPD <- function(model,
+                              covariates,
+                              I_basis,
+                              M_basis,
+                              knots,
+                              Y = NULL,
+                              nY = 10000,
+                              tau = 0.5,
+                              type = 'QF',
+                              c1 = 10,
+                              c2 = 10,
+                              p_a = 0.5,
+                              p_b = 0.975) {
+
+  tf <- get("tf", envir = asNamespace("SPQRX"))
+
+  .pdf.function <- function(x, probs_row, M_basis_row) {
+    # Approximate PDF using M_basis and probs
+    m_basis <- basis(x, n.knots, knots, integral = FALSE)
+    pdf_val <- probs_row %*% m_basis
+    as.numeric(pdf_val)
+  }
+
+
+  .expectation.function <- function(x, probs_row) {
+    I_basis <- basis(x, n.knots, knots, integral = TRUE)
+    F_x <- probs_row %*% I_basis
+    1 - F_x   # survival function
+  }
+
+  .second.moment.function <- function(x, probs_row) {
+    I_basis <- basis(x, n.knots, knots, integral = TRUE)
+    F_x <- probs_row %*% I_basis
+    2 * x * (1 - F_x)
+  }
+
+
+  pred        <- as.matrix(model(list(
+    covariates = covariates,
+    data = matrix(0, nrow = nrow(covariates), ncol = 1),
+    I_basis = I_basis
+  )))
+  n <- nrow(pred)
+  ntau = length(tau)
+  n.knots <- dim(I_basis)[2]
+  probs <- matrix(pred[, 1:n.knots], n, n.knots)
+  xi = pred[, n.knots + 1]
+
+  if (is.null(Y)) {
+    Y <- seq(0, 1, length.out = nY)
+  }
+  if (type == "QF") {
+    quant = matrix(0, ncol = ntau, nrow = n)
+  }
+  if (type == "QF" & any(tau <= p_a)) {
+    Y.Q.est <- seq(0, 1, length.out = nY)
+    quant = predict.spqrk(
+      model = model,
+      type = 'QF',
+      Y = Y.Q.est,
+      knots = knots,
+      covariates = covariates,
+      I_basis = I_basis,
+      tau = tau
+    )
+    quant[, tau > p_a] = NA
+    if (sum(tau <= p_a) == ntau)
+      return(quant)
+  }
+
+  #ab = predict.spqrk(
+  #  model = model,
+  #  type = 'QF',
+  #  Y = Y,
+  #  knots = knots,
+  #  covariates = covariates,
+  #  I_basis = I_basis,
+  #  tau = c(p_a, p_b)
+  #)
+
+  # Adding this change for lime reasons
+  ab = predict.spqrk(
+    model = model,
+    type = 'QF',
+    Y = Y,
+    knots = knots,
+    covariates = covariates,
+    I_basis = I_basis,
+    tau = c(p_a, p_b)
+  )
+
+  # Force matrix structure
+  ab <- as.matrix(ab)
+
+  if (ncol(ab) != 2) {
+    ab <- matrix(ab, ncol = 2)
+  }
+
+
+  if (type == "PDF" & length(ab) == 2) {
+    ab = matrix(
+      rep(c(ab), length = 2 * length(Y)),
+      nrow = length(Y),
+      ncol = 2,
+      byrow = T
+    )
+  }
+
+  sig <- c(sigma.val(ab[, 1], ab[, 2], p_a, p_b, xi))
+  u <- c(u.val(ab[, 1], p_a, sig, xi))
+
+  if (type != "QF") {
+    I_basis <- basis(Y , n.knots, knots, integral = TRUE)
+    M_basis <- basis(Y , n.knots, knots, integral = FALSE)
+    if (ncol(I_basis) != n)
+      F.S  <- probs %*% I_basis
+    if (ncol(I_basis) == n)
+      F.S  <- colSums(I_basis * t(probs))
+    F.S[F.S > 1] = 1
+
+    p = weight(Y, ab[, 1], ab[, 2], c1 = c1, c2 = c2)
+    F.G = apply(cbind(Y, u, sig, xi), 1, function(x)
+      F.GPD(x[1], x[2], x[3], x[4]))
+
+    F.B =  F.blend(Y, F.S, F.G, p)
+  }
+
+
+
+  if (type == "QF" & any(tau >= p_b)) {
+    quant[, tau >= p_b] = apply(as.matrix(tau[tau >= p_b]),1,
+                                function(x) F.inverse.GPD(x, u, sig, xi))
+    if (sum(tau > p_a & tau < p_b) == 0)
+      return(quant)
+  }
+
+
+
+  if (type == "QF" && any(tau > p_a & tau < p_b)) {
+
+    mid.idx  <- which(tau > p_a & tau < p_b)
+    tau.sub  <- tau[mid.idx]
+
+    for (i in seq_len(n)) {
+
+      # Per-row support grid (same as original)
+      Y_i <- seq(ab[i, 1], ab[i, 2], length.out = nY)
+
+      # Precompute basis once per row
+      I_basis_i <- basis(Y_i, n.knots, knots, integral = TRUE)
+
+      # Compute spline CDF
+      F.S <- as.numeric(probs[i, ] %*% I_basis_i)
+      F.S[F.S > 1] <- 1
+
+      # Blending weight
+      p_i <- weight(Y_i, ab[i, 1], ab[i, 2], c1 = c1, c2 = c2)
+
+      # Vectorized GPD CDF (NO apply)
+      F.G <- F.GPD(Y_i, u[i], sig[i], xi[i])
+
+      # Blended CDF
+      F.B <- F.blend(Y_i, F.S, F.G, p_i)
+
+      # Invert via interpolation
+      quant[i, mid.idx] <- stats::approx(
+        x = F.B,
+        y = Y_i,
+        xout = tau.sub,
+        ties = "ordered"
+      )$y
+    }
+
+    return(quant)
+  }
+
+
+
+
+
+
+
+  if (type == "CDF")
+    return(F.B)
+  if (type == "PDF") {
+    if (ncol(M_basis) != n)
+      f.S  <- probs %*% M_basis
+    if (ncol(M_basis) == n)
+      f.S  <- colSums(M_basis * t(probs))
+    f.S[Y < 0] = 0
+    f.S[Y > 1] = 0
+    f.G = apply(cbind(Y, u, sig, xi), 1, function(x)
+      f.GPD(x[1], x[2], x[3], x[4]))
+    p.prime = weight.prime(Y, ab[, 1], ab[, 2], c1 = c1, c2 = c2)
+
+    f.B = F.B * (p.prime * log(F.G) + p * f.G / F.G - p.prime * log(F.S) +
+                   (1 - p) * f.S / F.S)
+    f.B[F.G == 0] = f.S[F.G == 0]
+    return (f.B)
+  }
+
+
+
+}
+
+>>>>>>> origin/merging-dalton
 
 
 
