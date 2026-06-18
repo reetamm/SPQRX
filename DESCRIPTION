@@ -21,12 +21,8 @@ Imports:
     RcppArmadillo,
     reticulate,
     keras3,
-<<<<<<< HEAD
     lime,
     tensorflow
-=======
-    lime
->>>>>>> parent of d450603 (Fixing history problem for the merge request)
 LinkingTo:
     Rcpp,
     RcppArmadillo

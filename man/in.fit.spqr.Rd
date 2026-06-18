@@ -50,7 +50,7 @@ evaluations for the training responses.}
 evaluations for the validation responses.}
 
 \item{hyperparameter}{List. Model training configuration created by
-\code{create.packages.hyperparameter()}, containing elements such
+\code{create_packages_hyperparameter()}, containing elements such
 as `epochs`, `batch_size`, and `activation`.}
 }
 \value{

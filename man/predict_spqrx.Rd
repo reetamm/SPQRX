@@ -24,7 +24,7 @@ predict_spqrx(
 \code{type = "CDF"} and \code{type = "PDF"}.}
 
 \item{type}{Character string specifying prediction type:
-\code{"QF"} (quantile function), \code{"CDF"}, or \code{"PDF"}.}
+\code{"QF"} (quantile function), \code{"CDF"},\code{"XI"}, or \code{"PDF"}.}
 
 \item{tau}{Numeric value or vector of quantile levels in (0,1).
 Used when \code{type = "QF"}.}
@@ -40,6 +40,7 @@ are transformed back to the original response scale.}
   \item For \code{type = "QF"}: Matrix of predicted quantiles.
   \item For \code{type = "CDF"}: Matrix or vector of cumulative probabilities.
   \item For \code{type = "PDF"}: Matrix or vector of density values.
+  \item For \code{type = "XI"}: Matrix which is a column vector of the XI's.
 }
 }
 \description{
