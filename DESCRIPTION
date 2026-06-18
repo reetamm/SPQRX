@@ -1,6 +1,5 @@
 Package: SPQRX
 Type: Package
-<<<<<<< HEAD
 Title: SPQRX: Semi-Parametric Quantile Regression for eXtremes
 Version: 0.1.0
 Authors@R: c(person("Reetam", "Majumder", email = "reetam.m303@gmail.com", role = c("aut","cre")),
@@ -11,14 +10,6 @@ License: MIT
 Encoding: UTF-8
 URL: https://reetamm.github.io/SPQRX/
 BugReports: https://github.com/reetamm/SPQRX/issues
-=======
-Title: SPQRX: Semi-Parametric Quantile Regression Neural Networks
-Version: 0.1.0
-Authors@R: person("Dalton", "YourLastName", email = "dalton@example.com", role = c("aut", "cre"))
-Description: Semi-parametric quantile regression for extreme quantile levels using neural network models.
-License: MIT
-Encoding: UTF-8
->>>>>>> origin/merging-dalton
 LazyData: true
 Imports:
     stats,
@@ -29,13 +20,9 @@ Imports:
     Rcpp,
     RcppArmadillo,
     reticulate,
-<<<<<<< HEAD
     keras3,
     lime
-=======
-    tensorflow,
-    keras3
->>>>>>> origin/merging-dalton
+    tensorflow
 LinkingTo:
     Rcpp,
     RcppArmadillo
