@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 #' @import reticulate
 
-=======
->>>>>>> origin/merging-dalton
 .onLoad <- function(libname, pkgname) {
   # Ensure TensorFlow is installed
   if (!reticulate::py_module_available("tensorflow")) {

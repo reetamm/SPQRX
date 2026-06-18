@@ -1,5 +1,9 @@
 Version: 1.0
+<<<<<<< HEAD
 ProjectId: 76673646-b988-4b5a-9f9e-e21677496963
+=======
+ProjectId: 38941587-fa03-4d5e-8754-3d0f1a86cbdf
+>>>>>>> parent of d450603 (Fixing history problem for the merge request)
 
 RestoreWorkspace: Default
 SaveWorkspace: Default
@@ -12,3 +16,14 @@ Encoding: UTF-8
 
 RnwWeave: Sweave
 LaTeX: pdfLaTeX
+<<<<<<< HEAD
+=======
+
+AutoAppendNewline: Yes
+StripTrailingWhitespace: Yes
+
+BuildType: Package
+PackageUseDevtools: Yes
+PackageInstallArgs: --no-multiarch --with-keep.source
+PackageRoxygenize: rd,collate,namespace
+>>>>>>> parent of d450603 (Fixing history problem for the merge request)

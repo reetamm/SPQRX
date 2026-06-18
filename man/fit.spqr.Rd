@@ -33,11 +33,7 @@ fit.spqr(
 \item{y_validation}{Numeric vector or matrix of validation responses.}
 
 \item{hyperparameter}{List created by
-<<<<<<< HEAD
 \code{create.packages.hyperparameter()} specifying training
-=======
-\code{create_packages_hyperparameter()} specifying training
->>>>>>> origin/merging-dalton
 configuration (e.g., epochs, batch size).}
 
 \item{pre_normalize}{Logical. Included for API consistency.

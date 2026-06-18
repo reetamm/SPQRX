@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
 ^\.github$
-=======
-^SPQRX\.Rproj$
-^\.Rproj\.user$
->>>>>>> origin/merging-dalton
