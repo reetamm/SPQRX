@@ -1,14 +1,8 @@
 Version: 1.0
-<<<<<<< HEAD
-ProjectId: 38941587-fa03-4d5e-8754-3d0f1a86cbdf
+ProjectId: 76673646-b988-4b5a-9f9e-e21677496963
 
 RestoreWorkspace: Default
 SaveWorkspace: Default
-=======
-
-RestoreWorkspace: No
-SaveWorkspace: No
->>>>>>> origin/merging-dalton
 AlwaysSaveHistory: Default
 
 EnableCodeIndexing: Yes
@@ -18,15 +12,3 @@ Encoding: UTF-8
 
 RnwWeave: Sweave
 LaTeX: pdfLaTeX
-
-AutoAppendNewline: Yes
-StripTrailingWhitespace: Yes
-<<<<<<< HEAD
-=======
-LineEndingConversion: Posix
->>>>>>> origin/merging-dalton
-
-BuildType: Package
-PackageUseDevtools: Yes
-PackageInstallArgs: --no-multiarch --with-keep.source
-PackageRoxygenize: rd,collate,namespace

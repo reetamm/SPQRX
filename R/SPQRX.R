@@ -1926,10 +1926,14 @@ predict_model.spqrx_model <- function(object, newdata, ...) {
     object = object,
     x = newdata,
 <<<<<<< HEAD
+<<<<<<< HEAD
     type = "QF",
     tau = 0.5,
 =======
     type = object$type,
+=======
+    type = type,
+>>>>>>> parent of 6dc27af (Fix the lime method)
     tau = object$current_tau,
 >>>>>>> origin/merging-dalton
     normalize_input = FALSE
@@ -1989,8 +1993,11 @@ eval_explain_lime <- function(model,
 <<<<<<< HEAD
 =======
   model$current_tau <- tau
+<<<<<<< HEAD
   model$type <- type
 >>>>>>> origin/merging-dalton
+=======
+>>>>>>> parent of 6dc27af (Fix the lime method)
 
   n_features <- ncol(x_training)
 
@@ -2056,7 +2063,8 @@ eval_explain_lime <- function(model,
     x_explain_norm,
     explainer,
     n_features = n_features,
-    n_permutations = n_permutations
+    n_permutations = n_permutations,
+    type = type
   )
 
 
