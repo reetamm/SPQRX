@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="favicon.ico">
 <link rel="manifest" href="site.webmanifest">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="SPQRX: Semi-Parametric Quantile Regression for eXtremes">
 <meta name="description" content="Bulk-and-tail density regression using neural networks">
@@ -81,7 +81,7 @@
 <span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'bedrooms'</span>, <span class="st">'batchrooms'</span>, <span class="st">'squareFeet'</span>, <span class="st">'lon'</span>, <span class="st">'lat'</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/preprocessing.data.html">preprocessing.data</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, n.knots <span class="op">=</span> <span class="fl">25</span>, testing_ratio <span class="op">=</span> <span class="fl">0.2</span>, valid_ratio <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/preprocessing_data.html">preprocessing_data</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, testing_ratio <span class="op">=</span> <span class="fl">0.2</span>, valid_ratio <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">x_training</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">x_training</span></span>
 <span><span class="va">x_validation</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">x_validation</span></span>
@@ -96,14 +96,14 @@
 <span><span class="va">c1</span> <span class="op">=</span> <span class="fl">30</span></span>
 <span><span class="va">c2</span> <span class="op">=</span> <span class="fl">5</span></span>
 <span></span>
-<span><span class="va">hyperparameter</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create.packages.hyperparameter.html">create.packages.hyperparameter</a></span><span class="op">(</span>p_a <span class="op">=</span> <span class="va">p_a</span> , p_b <span class="op">=</span> <span class="va">p_b</span> , c1 <span class="op">=</span> <span class="va">c1</span>, c2 <span class="op">=</span> <span class="va">c2</span><span class="op">)</span></span>
+<span><span class="va">hyperparameter</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_packages_hyperparameter.html">create_packages_hyperparameter</a></span><span class="op">(</span>p_a <span class="op">=</span> <span class="va">p_a</span> , p_b <span class="op">=</span> <span class="va">p_b</span> , c1 <span class="op">=</span> <span class="va">c1</span>, c2 <span class="op">=</span> <span class="va">c2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">model.heavy</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_spqrx.html">fit_spqrx</a></span><span class="op">(</span>input_dim <span class="op">=</span> <span class="fl">5</span>, hidden_dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">45</span> , <span class="fl">45</span><span class="op">)</span>, n.knots <span class="op">=</span> <span class="fl">25</span>, x_training <span class="op">=</span> <span class="va">x_training</span>, </span>
 <span>                   x_validation <span class="op">=</span> <span class="va">x_validation</span>, y_training <span class="op">=</span> <span class="va">y_training</span>, y_validation <span class="op">=</span> <span class="va">y_validation</span>,</span>
 <span>                   hyperparameter <span class="op">=</span> <span class="va">hyperparameter</span>, pre_train <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># evaluate model fit</span></span>
-<span><span class="fu"><a href="reference/eval.plot.qexp.html">eval.plot.qexp</a></span><span class="op">(</span><span class="va">model.heavy</span>, <span class="va">x_testing</span>, <span class="va">y_testing</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/eval_plot_qexp.html">eval_plot_qexp</a></span><span class="op">(</span><span class="va">model.heavy</span>, <span class="va">x_testing</span>, <span class="va">y_testing</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
 </div>
 

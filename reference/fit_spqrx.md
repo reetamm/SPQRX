@@ -56,7 +56,7 @@ fit_spqrx(
 - hyperparameter:
 
   List of hyperparameters. If `NULL`, default values are generated via
-  [`create.packages.hyperparameter()`](https://reetamm.github.io/SPQRX/reference/create.packages.hyperparameter.md).
+  [`create_packages_hyperparameter()`](https://reetamm.github.io/SPQRX/reference/create_packages_hyperparameter.md).
 
 - package.it:
 

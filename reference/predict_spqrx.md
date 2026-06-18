@@ -40,7 +40,7 @@ predict_spqrx(
 - type:
 
   Character string specifying prediction type: `"QF"` (quantile
-  function), `"CDF"`, or `"PDF"`.
+  function), `"CDF"`,`"XI"`, or `"PDF"`.
 
 - tau:
 
@@ -64,3 +64,5 @@ predict_spqrx(
 - For `type = "CDF"`: Matrix or vector of cumulative probabilities.
 
 - For `type = "PDF"`: Matrix or vector of density values.
+
+- For `type = "XI"`: Matrix which is a column vector of the XI's.

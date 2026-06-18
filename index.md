@@ -36,7 +36,7 @@ y <- matrix ( dataset$price, ncol = 1)
 
 x <- as.matrix(dataset[, c('bedrooms', 'batchrooms', 'squareFeet', 'lon', 'lat')])
 
-data <- preprocessing.data(x, y, n.knots = 25, testing_ratio = 0.2, valid_ratio = 0.2)
+data <- preprocessing_data(x, y, testing_ratio = 0.2, valid_ratio = 0.2)
 
 x_training <- data$x_training
 x_validation <- data$x_validation
@@ -51,7 +51,7 @@ p_b = 0.999
 c1 = 30
 c2 = 5
 
-hyperparameter <- create.packages.hyperparameter(p_a = p_a , p_b = p_b , c1 = c1, c2 = c2)
+hyperparameter <- create_packages_hyperparameter(p_a = p_a , p_b = p_b , c1 = c1, c2 = c2)
 
 model.heavy <- fit_spqrx(input_dim = 5, hidden_dim = c(45 , 45), n.knots = 25, x_training = x_training, 
                    x_validation = x_validation, y_training = y_training, y_validation = y_validation,
@@ -61,7 +61,7 @@ model.heavy <- fit_spqrx(input_dim = 5, hidden_dim = c(45 , 45), n.knots = 25, x
 ``` r
 
 # evaluate model fit
-eval.plot.qexp(model.heavy, x_testing, y_testing)
+eval_plot_qexp(model.heavy, x_testing, y_testing)
 ```
 
 ![](reference/figures/README-unnamed-chunk-4-1.png)

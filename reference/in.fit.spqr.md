@@ -82,7 +82,7 @@ in.fit.spqr(
 - hyperparameter:
 
   List. Model training configuration created by
-  [`create.packages.hyperparameter()`](https://reetamm.github.io/SPQRX/reference/create.packages.hyperparameter.md),
+  [`create_packages_hyperparameter()`](https://reetamm.github.io/SPQRX/reference/create_packages_hyperparameter.md),
   containing elements such as \`epochs\`, \`batch_size\`, and
   \`activation\`.
 

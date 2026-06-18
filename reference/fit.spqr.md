@@ -53,7 +53,7 @@ fit.spqr(
 - hyperparameter:
 
   List created by
-  [`create.packages.hyperparameter()`](https://reetamm.github.io/SPQRX/reference/create.packages.hyperparameter.md)
+  [`create_packages_hyperparameter()`](https://reetamm.github.io/SPQRX/reference/create_packages_hyperparameter.md)
   specifying training configuration (e.g., epochs, batch size).
 
 - pre_normalize:
